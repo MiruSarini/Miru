@@ -1,0 +1,3589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MIRU</title><!-- MIRU v5 -->
+  <style>
+:root{
+  --bg:#090a10; --surface:#11131c; --surface2:#171a25; --surface3:#202433;
+  --text:#f7f7fb; --muted:#9298aa; --accent:#8b7cff; --accent2:#ff6b9d;
+  --line:rgba(255,255,255,.08); --success:#55d68a; --danger:#ff6070;
+  --shadow:0 18px 45px rgba(0,0,0,.28);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{background:var(--bg)}
+body{
+  min-height:100vh;background:
+  radial-gradient(circle at 85% -5%,rgba(139,124,255,.20),transparent 34%),
+  radial-gradient(circle at -10% 35%,rgba(255,107,157,.10),transparent 28%),
+  var(--bg);color:var(--text);
+  font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  padding:0 14px 96px;
+}
+button,input,select{font:inherit}
+button{cursor:pointer}
+.app{width:100%;max-width:760px;margin:auto}
+header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:22px 2px 16px;position:sticky;top:0;z-index:20;
+  background:linear-gradient(var(--bg) 72%,transparent);
+}
+.brand{display:flex;align-items:center;gap:10px}
+.brand-mark{
+  width:40px;height:40px;border-radius:13px;display:grid;place-items:center;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  box-shadow:0 10px 28px rgba(139,124,255,.28);font-size:20px
+}
+.brand h1{font-size:1.35rem;letter-spacing:-.7px}
+.brand p{font-size:.68rem;color:var(--muted);margin-top:1px}
+.icon-btn{
+  width:40px;height:40px;border:1px solid var(--line);border-radius:13px;
+  background:var(--surface);color:var(--text);font-size:18px
+}
+.hero{padding:10px 0 18px}
+.hero h2{font-size:1.85rem;line-height:1.08;letter-spacing:-1.2px}
+.hero p{color:var(--muted);font-size:.82rem;margin-top:7px}
+.stats-card{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:1px;overflow:hidden;
+  background:var(--line);border:1px solid var(--line);border-radius:20px;
+  box-shadow:var(--shadow);margin-bottom:16px
+}
+.stat-box{background:rgba(17,19,28,.94);padding:15px 8px;text-align:center}
+.stat-box h3{font-size:1.25rem;color:var(--text)}
+.stat-box p{font-size:.62rem;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-top:4px}
+.search-box{
+  display:flex;gap:8px;margin-bottom:14px;padding:6px;
+  background:var(--surface);border:1px solid var(--line);border-radius:17px
+}
+.search-icon{width:40px;display:grid;place-items:center;color:var(--muted);font-size:17px}
+input[type=text]{
+  min-width:0;flex:1;background:transparent;border:0;outline:0;color:var(--text);
+  font-size:.88rem
+}
+input::placeholder{color:#6f7587}
+.btn-search{
+  border:0;border-radius:12px;padding:0 15px;background:var(--accent);color:white;
+  font-size:.78rem;font-weight:700;box-shadow:0 7px 18px rgba(139,124,255,.22)
+}
+.tabs{
+  display:flex;gap:7px;overflow-x:auto;padding:2px 0 13px;
+  scrollbar-width:none;position:sticky;top:78px;z-index:10;
+  background:linear-gradient(var(--bg) 70%,transparent)
+}
+.tabs::-webkit-scrollbar{display:none}
+.tab-btn{
+  border:1px solid var(--line);background:var(--surface);color:var(--muted);
+  padding:8px 13px;border-radius:999px;font-size:.73rem;white-space:nowrap
+}
+.tab-btn.active{background:var(--text);color:#0a0b10;border-color:var(--text);font-weight:750}
+.section-head{display:flex;justify-content:space-between;align-items:center;margin:4px 2px 10px}
+.section-head h3{font-size:.98rem}
+.section-head span{font-size:.68rem;color:var(--muted)}
+.list{display:flex;flex-direction:column;gap:10px}
+.card{
+  position:relative;display:flex;gap:12px;padding:10px;
+  background:linear-gradient(145deg,rgba(23,26,37,.98),rgba(14,16,24,.98));
+  border:1px solid var(--line);border-radius:18px;box-shadow:0 10px 28px rgba(0,0,0,.16);
+  overflow:hidden;transition:transform .18s,border-color .18s
+}
+.card:active{transform:scale(.985)}
+.card img{width:72px;height:104px;object-fit:cover;border-radius:11px;background:var(--surface3);flex:none}
+.card-content{
+  min-width:0;max-width:100%;flex:1;display:flex;flex-direction:column;
+  justify-content:space-between;gap:9px;overflow:hidden
+}
+.card-title{
+  font-size:.9rem;font-weight:750;line-height:1.25;
+  white-space:normal;overflow-wrap:anywhere;word-break:break-word;
+  display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden
+}
+.badges{display:flex;gap:5px;flex-wrap:wrap;margin-top:6px}
+.badge{
+  display:inline-flex;align-items:center;font-size:.62rem;color:#dce0eb;
+  background:var(--surface3);padding:4px 7px;border-radius:7px
+}
+.badge.score{color:#ffd76a}
+.card-meta{font-size:.68rem;color:var(--muted);margin-top:6px}
+.progress-row{display:flex;justify-content:space-between;font-size:.65rem;color:var(--muted);margin-bottom:5px}
+.progress-row b{color:var(--text)}
+.progress{height:5px;background:#292d3b;border-radius:999px;overflow:hidden}
+.progress i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:inherit}
+.actions{display:flex;align-items:center;gap:7px}
+.counter{display:flex;align-items:center;gap:7px;background:#0b0d13;border:1px solid var(--line);padding:4px;border-radius:10px}
+.counter button{border:0;background:var(--surface3);color:white;width:25px;height:25px;border-radius:7px;font-weight:800}
+.counter span{font-size:.68rem;min-width:40px;text-align:center;font-weight:700}
+select{
+  min-width:0;flex:1;background:var(--surface3);color:#e8eaf0;border:1px solid var(--line);
+  border-radius:9px;padding:7px 6px;font-size:.66rem;outline:0
+}
+.del-btn{border:0;background:transparent;color:#72798b;padding:6px;font-size:.9rem}
+.del-btn:hover{color:var(--danger)}
+.add-btn{
+  width:100%;border:1px solid rgba(139,124,255,.35);background:rgba(139,124,255,.10);
+  color:#cfc9ff;border-radius:10px;padding:8px;font-size:.68rem;font-weight:750
+}
+.empty-state{
+  text-align:center;color:var(--muted);padding:50px 18px;border:1px dashed var(--line);
+  border-radius:18px;background:rgba(17,19,28,.55);font-size:.78rem
+}
+.empty-state .empty-icon{font-size:28px;margin-bottom:9px}
+.bottom-nav{
+  position:fixed;left:50%;bottom:12px;transform:translateX(-50%);
+  width:min(calc(100% - 20px),730px);display:grid;grid-template-columns:repeat(5,1fr);
+  padding:6px;background:rgba(17,19,28,.91);backdrop-filter:blur(18px);
+  border:1px solid var(--line);border-radius:19px;box-shadow:0 15px 45px rgba(0,0,0,.45);z-index:30
+}
+.nav-btn{border:1px solid transparent;background:transparent;color:var(--muted);padding:8px 2px;border-radius:13px;font-size:.58rem;transition:.2s ease;min-width:0}
+.nav-btn span{display:block;font-size:17px;margin-bottom:3px}
+.nav-btn.active{
+  color:#fff;
+  background:linear-gradient(135deg,rgba(139,124,255,.30),rgba(255,107,157,.14));
+  border-color:rgba(255,255,255,.12);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.14),0 7px 20px rgba(0,0,0,.24);
+  text-shadow:0 1px 12px rgba(255,255,255,.18)
+}
+@media(min-width:650px){
+  body{padding-left:22px;padding-right:22px}
+  .list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
+  .card{min-width:0}
+}
+
+/* Motion + polish */
+.card{animation:cardIn .38s cubic-bezier(.2,.75,.25,1) both}
+.card:nth-child(2){animation-delay:.035s}.card:nth-child(3){animation-delay:.07s}
+.card:nth-child(4){animation-delay:.105s}.card:nth-child(5){animation-delay:.14s}
+.card:nth-child(6){animation-delay:.175s}
+@keyframes cardIn{from{opacity:0;transform:translateY(12px) scale(.985)}to{opacity:1;transform:none}}
+@keyframes pop{0%{transform:scale(.92);opacity:.5}70%{transform:scale(1.04)}100%{transform:scale(1);opacity:1}}
+.stat-box h3{animation:pop .45s ease-out}
+.btn-search,.add-btn,.tab-btn,.icon-btn,.counter button,.nav-btn,select{transition:transform .16s ease,background .2s ease,border-color .2s ease,box-shadow .2s ease}
+button:active{transform:scale(.95)}
+.progress i{transition:width .45s cubic-bezier(.2,.8,.2,1)}
+.settings-panel{position:fixed;inset:0;z-index:100;pointer-events:none}
+.settings-panel.open{pointer-events:auto}
+.settings-backdrop{
+  position:absolute;inset:0;background:rgba(0,0,0,.58);opacity:0;
+  transition:opacity .25s;touch-action:none
+}
+.settings-sheet{position:absolute;left:50%;bottom:0;width:min(100%,760px);transform:translate(-50%,105%);background:#151823;border:1px solid var(--line);border-bottom:0;border-radius:24px 24px 0 0;padding:10px 16px 24px;box-shadow:0 -20px 60px rgba(0,0,0,.45);transition:transform .32s cubic-bezier(.2,.8,.2,1)}
+.settings-panel.open .settings-backdrop{opacity:1}
+.settings-panel.open .settings-sheet{transform:translate(-50%,0)}
+.sheet-grab{width:38px;height:4px;border-radius:4px;background:#454a59;margin:3px auto 15px}
+.sheet-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
+.sheet-head h3{font-size:1rem}
+.sheet-head button{border:0;background:var(--surface3);color:white;width:32px;height:32px;border-radius:10px;font-size:20px}
+.setting-row{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 0}
+.setting-row span{display:flex;flex-direction:column;gap:4px}
+.setting-row b{font-size:.82rem}.setting-row small{font-size:.68rem;color:var(--muted)}
+.setting-row select{flex:0 0 auto;width:92px}
+
+
+.btn-search,.add-btn,.icon-btn,.counter button,.nav-btn,.filter-btn,select{
+  -webkit-tap-highlight-color:transparent
+}
+.btn-search{
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.20),0 8px 22px rgba(139,124,255,.25)
+}
+.icon-btn,.counter,.counter button,select{
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.07)
+}
+.nav-btn{
+  border:1px solid transparent;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.03)
+}
+.nav-btn.active{
+  background:linear-gradient(135deg,rgba(139,124,255,.26),rgba(255,107,157,.10));
+  border-color:rgba(255,255,255,.10);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.10),0 6px 18px rgba(0,0,0,.2)
+}
+button:active{filter:brightness(1.18)}
+
+
+.stat-time{
+  border:1px solid transparent;cursor:pointer;appearance:none;-webkit-appearance:none;
+  width:100%;color:inherit;background:rgba(17,19,28,.94);position:relative;
+  transition:transform .18s ease,background .2s ease,border-color .2s ease
+}
+.stat-time:hover{background:rgba(255,255,255,.055);border-color:rgba(255,255,255,.08)}
+
+.stat-time span{display:block;font-size:.48rem;color:#777e91;margin-top:5px;opacity:.8}
+.time-sheet{max-height:78vh;overflow:auto}
+.time-sheet small{display:block;color:var(--muted);font-size:.65rem;margin-top:3px}
+.time-breakdown{display:flex;flex-direction:column;gap:8px}
+.time-item{
+  display:grid;grid-template-columns:42px 1fr auto;gap:10px;align-items:center;
+  padding:10px;background:rgba(255,255,255,.035);border:1px solid var(--line);
+  border-radius:14px
+}
+.time-item img{width:42px;height:56px;object-fit:cover;border-radius:8px}
+.time-item .name{font-size:.73rem;font-weight:750;white-space:normal;overflow-wrap:anywhere;word-break:break-word;line-height:1.25}
+.time-item .detail{font-size:.61rem;color:var(--muted);margin-top:3px}
+.time-item .amount{text-align:right;font-size:.68rem;font-weight:800}
+.time-item .amount small{font-size:.55rem;color:var(--muted);font-weight:500}
+.time-total{
+  padding:13px;margin-bottom:4px;border-radius:14px;
+  background:linear-gradient(135deg,rgba(139,124,255,.16),rgba(255,107,157,.08));
+  border:1px solid rgba(139,124,255,.18);font-size:.75rem
+}
+
+
+.nav-btn,.icon-btn,.btn-search,.add-btn,.counter button,.stat-time{
+  position:relative;overflow:hidden;
+}
+.nav-btn::after,.btn-search::after,.add-btn::after,.counter button::after,.icon-btn::after,.stat-time::after{
+  content:"";position:absolute;inset:0;border-radius:inherit;background:rgba(255,255,255,.12);
+  transform:scale(0);opacity:0;transition:transform .25s ease,opacity .25s ease;pointer-events:none
+}
+.nav-btn:active::after,.btn-search:active::after,.add-btn:active::after,
+.counter button:active::after,.icon-btn:active::after,.stat-time:active::after{
+  transform:scale(1);opacity:1;transition:0s
+}
+
+
+/* Title breakdown */
+.stat-titles{
+  border:0;cursor:pointer;appearance:none;-webkit-appearance:none;width:100%;
+  color:inherit;background:rgba(17,19,28,.94);position:relative;
+  transition:transform .18s ease,background .2s ease,border-color .2s ease
+}
+.stat-titles span{display:block;font-size:.48rem;color:#777e91;margin-top:5px;opacity:.8}
+.title-sheet{max-height:84vh;overflow:auto}
+.title-tabs{
+  display:flex;gap:6px;padding:5px;margin:2px 0 12px;overflow:auto;
+  background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.09);
+  border-radius:16px;backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)
+}
+.title-tab{
+  flex:1;min-width:max-content;border:1px solid transparent;
+  background:rgba(255,255,255,.025);color:var(--muted);
+  padding:9px 11px;border-radius:11px;font-size:.66rem;font-weight:750;
+  transition:.2s ease
+}
+.title-tab.active{
+  color:#fff;
+  background:linear-gradient(135deg,rgba(139,124,255,.30),rgba(255,107,157,.14));
+  border-color:rgba(255,255,255,.12);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.13),0 6px 18px rgba(0,0,0,.18)
+}
+.title-count-strip{
+  font-size:.66rem;color:var(--muted);margin:0 2px 9px
+}
+.title-breakdown-list{display:flex;flex-direction:column;gap:8px}
+.franchise-card{
+  overflow:hidden;background:rgba(255,255,255,.035);border:1px solid var(--line);
+  border-radius:15px;transition:border-color .2s ease,background .2s ease
+}
+.franchise-head{
+  display:flex;align-items:center;gap:10px;padding:11px;cursor:pointer;
+  -webkit-tap-highlight-color:transparent
+}
+.franchise-head:active{background:rgba(255,255,255,.04)}
+.franchise-poster{width:42px;height:56px;object-fit:cover;border-radius:8px;flex:none}
+.franchise-main{min-width:0;flex:1}
+.franchise-name{
+  font-size:.76rem;font-weight:800;line-height:1.25;overflow-wrap:anywhere;
+  word-break:break-word
+}
+.franchise-meta{font-size:.61rem;color:var(--muted);margin-top:4px}
+.franchise-count{
+  flex:none;text-align:right;font-size:.63rem;color:#d7d9e4;font-weight:750
+}
+.franchise-chevron{color:var(--muted);font-size:14px;transition:transform .2s ease}
+.franchise-card.open .franchise-chevron{transform:rotate(180deg)}
+.franchise-releases{display:none;padding:0 11px 11px}
+.franchise-card.open .franchise-releases{display:flex;flex-direction:column;gap:6px}
+.release-row{
+  display:grid;grid-template-columns:36px minmax(0,1fr) auto;gap:8px;align-items:center;
+  padding:8px;border-radius:11px;background:rgba(0,0,0,.12);border:1px solid rgba(255,255,255,.045)
+}
+.release-poster{width:36px;height:48px;object-fit:cover;border-radius:7px}
+.release-name{font-size:.64rem;font-weight:700;line-height:1.25;overflow-wrap:anywhere}
+.release-type{font-size:.55rem;color:var(--muted);margin-top:2px}
+.release-status{
+  white-space:nowrap;padding:4px 6px;border-radius:7px;font-size:.52rem;font-weight:800;
+  border:1px solid rgba(255,255,255,.08)
+}
+.release-status.added{color:#a9f4c8;background:rgba(85,214,138,.10)}
+.release-status.watching{color:#c9c2ff;background:rgba(139,124,255,.13)}
+.release-status.planning{color:#ffd48e;background:rgba(255,185,90,.10)}
+.release-status.completed{color:#8fe8ff;background:rgba(70,200,235,.10)}
+.release-status.dropped{color:#ff9da7;background:rgba(255,96,112,.10)}
+.title-empty{padding:34px 16px;text-align:center;color:var(--muted);font-size:.72rem;border:1px dashed var(--line);border-radius:15px}
+
+
+.series-sheet{max-height:84vh;overflow:auto}
+.series-overview-list{display:flex;flex-direction:column;gap:8px}
+.series-release{
+  display:grid;grid-template-columns:42px minmax(0,1fr) auto;gap:10px;align-items:center;
+  padding:9px;border-radius:13px;background:rgba(255,255,255,.035);border:1px solid var(--line)
+}
+.series-release img{width:42px;height:56px;object-fit:cover;border-radius:8px}
+.series-release-name{font-size:.7rem;font-weight:800;line-height:1.25;overflow-wrap:anywhere}
+.series-release-meta{font-size:.56rem;color:var(--muted);margin-top:4px}
+.series-release-action{white-space:nowrap}
+.series-release-action button,.series-release-action select{
+  font-size:.56rem!important;padding:6px 8px!important
+}
+.series-badge{
+  display:inline-flex;padding:4px 6px;border-radius:7px;font-size:.5rem;font-weight:800;
+  border:1px solid rgba(255,255,255,.08)
+}
+.series-badge.added{color:#a9f4c8;background:rgba(85,214,138,.10)}
+.series-badge.watching{color:#c9c2ff;background:rgba(139,124,255,.13)}
+.series-badge.planning{color:#ffd48e;background:rgba(255,185,90,.10)}
+.series-badge.completed{color:#8fe8ff;background:rgba(70,200,235,.10)}
+.series-badge.dropped{color:#ff9da7;background:rgba(255,96,112,.10)}
+.series-empty{padding:30px 15px;text-align:center;color:var(--muted);font-size:.7rem;border:1px dashed var(--line);border-radius:15px}
+.related-btn{
+  margin-top:7px;width:32px;height:29px;display:grid;place-items:center;
+  border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.045);
+  color:#dfe1eb;border-radius:9px;padding:0;font-size:.8rem;font-weight:800;cursor:pointer;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.07);
+  transition:transform .16s ease,background .2s ease,border-color .2s ease
+}
+.related-btn:active{transform:scale(.92)}
+.related-btn:hover{
+  background:linear-gradient(135deg,rgba(139,124,255,.20),rgba(255,107,157,.08));
+  border-color:rgba(255,255,255,.15)
+}
+
+
+.related-added-check{
+  width:36px;height:36px;border-radius:50%;display:grid;place-items:center;position:relative;
+  background:rgba(85,214,138,.10);
+  border:1px solid rgba(117,255,172,.30);
+  animation:modernCheck .65s cubic-bezier(.22,.8,.25,1) both;
+}
+.related-added-check::before{
+  content:"";position:absolute;inset:4px;border-radius:50%;
+  border:2px solid transparent;border-top-color:#77f0a8;border-right-color:#77f0a8;
+  animation:checkRing .52s cubic-bezier(.5,.1,.3,1) both;
+}
+.related-added-check span{
+  position:relative;z-index:1;color:#c6ffda;font-size:17px;font-weight:900;
+  opacity:0;transform:scale(.4);
+  animation:checkMark .28s .25s cubic-bezier(.2,.9,.2,1) forwards;
+}
+@keyframes modernCheck{
+  0%{transform:scale(.72);opacity:0;filter:blur(1px)}
+  100%{transform:scale(1);opacity:1;filter:none}
+}
+@keyframes checkRing{
+  0%{transform:rotate(-40deg) scale(.65);opacity:0}
+  100%{transform:rotate(315deg) scale(1);opacity:1}
+}
+@keyframes checkMark{
+  0%{opacity:0;transform:scale(.4) rotate(-12deg)}
+  75%{opacity:1;transform:scale(1.12) rotate(2deg)}
+  100%{opacity:1;transform:scale(1) rotate(0)}
+}
+  70%{transform:scale(1.18);opacity:1}
+  100%{transform:scale(1)}
+}
+.related-status-choices{
+  display:grid;grid-template-columns:1fr 1fr;gap:4px;min-width:118px
+}
+.related-status-choices button{
+  border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.045);
+  color:#e9ebf3;border-radius:8px;padding:5px 6px;font-size:.49rem;font-weight:750;
+  transition:.18s ease
+}
+.related-status-choices button:hover{
+  background:linear-gradient(135deg,rgba(139,124,255,.22),rgba(255,107,157,.10));
+  border-color:rgba(255,255,255,.15)
+}
+.related-status-choices button:active{transform:scale(.94)}
+.series-release-action{min-width:118px;display:flex;justify-content:flex-end}
+
+
+.related-summary{
+  font-size:.64rem;color:var(--muted);padding:0 2px 10px
+}
+.series-release .release-kind{
+  display:inline-flex;align-items:center;margin-left:4px;padding:2px 5px;
+  border-radius:5px;background:rgba(255,255,255,.06);color:#c7cbd8;font-size:.48rem;
+  border:1px solid rgba(255,255,255,.06)
+}
+.series-overview-list{padding-bottom:6px}
+.series-release{animation:cardIn .32s ease both}
+.series-release:nth-child(2){animation-delay:.025s}
+.series-release:nth-child(3){animation-delay:.05s}
+.series-release:nth-child(4){animation-delay:.075s}
+.series-release:nth-child(5){animation-delay:.1s}
+
+
+body.modal-open{overflow:hidden;touch-action:none}
+.settings-panel.open{overscroll-behavior:contain}
+.settings-sheet{overscroll-behavior:contain}
+
+
+/* Progress stepper interaction */
+.counter button{
+  -webkit-user-select:none;user-select:none;touch-action:manipulation;
+  -webkit-touch-callout:none;
+}
+.counter button.holding{transform:scale(.93);filter:brightness(1.16)}
+.progress-confirm{
+  position:fixed;inset:0;z-index:120;display:none;align-items:center;justify-content:center;
+  padding:18px;background:rgba(0,0,0,.62);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)
+}
+.progress-confirm.open{display:flex}
+.progress-confirm-card{
+  width:min(100%,360px);background:rgba(20,23,33,.94);
+  border:1px solid rgba(255,255,255,.10);border-radius:22px;padding:18px;
+  box-shadow:0 24px 70px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.08);
+  animation:confirmIn .22s cubic-bezier(.2,.8,.2,1)
+}
+.progress-confirm-card h3{font-size:.95rem;line-height:1.25}
+.progress-confirm-card p{font-size:.72rem;color:var(--muted);line-height:1.45;margin-top:7px}
+.progress-confirm-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:16px}
+.progress-confirm-actions button{
+  border:1px solid rgba(255,255,255,.10);border-radius:12px;padding:10px 8px;
+  color:#f1f3f8;font-size:.72rem;font-weight:800;cursor:pointer;
+  background:rgba(255,255,255,.045);transition:.18s ease
+}
+.progress-confirm-actions button.proceed{
+  background:linear-gradient(135deg,rgba(139,124,255,.28),rgba(255,107,157,.12));
+  border-color:rgba(139,124,255,.28)
+}
+.progress-confirm-actions button:active{transform:scale(.96)}
+@keyframes confirmIn{
+  from{opacity:0;transform:translateY(10px) scale(.97)}
+  to{opacity:1;transform:none}
+}
+
+
+.time-note{
+  margin:8px 2px 10px;padding:9px 10px;border-radius:12px;
+  background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.06);
+  color:var(--muted);font-size:.62rem;line-height:1.35
+}
+.time-item-main{min-width:0;flex:1}
+.title-skip-control{
+  display:flex;align-items:center;gap:8px;margin-top:8px;flex-wrap:wrap
+}
+.skip-label{
+  font-size:.56rem;color:var(--muted);font-weight:650;letter-spacing:.01em
+}
+.skip-stepper{
+  display:inline-flex;align-items:center;height:32px;padding:3px;
+  border-radius:11px;background:rgba(255,255,255,.045);
+  border:1px solid rgba(255,255,255,.10);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.06)
+}
+.skip-stepper button{
+  width:29px;height:26px;border:0;border-radius:8px;
+  color:#e9ebf3;background:transparent;font-size:16px;font-weight:800;
+  cursor:pointer;display:grid;place-items:center;touch-action:manipulation;
+  transition:background .16s ease,transform .12s ease
+}
+.skip-stepper button:hover{background:rgba(255,255,255,.08)}
+.skip-stepper button:active{transform:scale(.9);background:rgba(139,124,255,.18)}
+.skip-stepper .skip-value{
+  width:48px;font-size:.69rem;gap:2px;cursor:default;
+  background:rgba(255,255,255,.055);color:#fff;display:grid;place-items:center
+}
+.skip-stepper .skip-value small{font-size:.52rem;color:#aeb3c2;font-weight:700}
+.reset-title-skip{
+  border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.035);
+  color:#cfd2dc;border-radius:8px;padding:6px 8px;font-size:.54rem;
+  font-weight:750;cursor:pointer;touch-action:manipulation
+}
+.reset-title-skip:active{transform:scale(.95)}
+.using-default{font-size:.52rem;color:#8e93a1}
+
+
+.search-box{position:relative}
+.search-clear{
+  display:none;position:absolute;right:74px;top:50%;transform:translateY(-50%);
+  width:28px;height:28px;border:0;border-radius:50%;
+  background:rgba(255,255,255,.07);color:#cfd3de;font-size:18px;
+  line-height:1;cursor:pointer;z-index:2
+}
+.search-clear.visible{display:grid;place-items:center}
+.search-clear:active{transform:translateY(-50%) scale(.9)}
+.search-box .btn-search{
+  min-width:76px;position:relative;z-index:2
+}
+.search-result-extra{
+  margin-top:6px;font-size:.59rem;line-height:1.35;color:var(--muted)
+}
+.search-result-extra b{color:#cfd3de;font-weight:700}
+.search-alts{
+  margin-top:3px;font-size:.57rem;line-height:1.35;color:#8f95a5;
+  overflow:hidden;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2
+}
+
+
+.vault-search-box,.discover-search-box{display:none}
+.vault-search-box.active,.discover-search-box.active{display:flex}
+.vault-filter-bar{
+  display:none;gap:8px;margin:2px 0 13px;padding:2px 1px 4px;
+  position:relative;z-index:20
+}
+.vault-filter-bar.active{display:flex}
+.filter-chip{
+  display:flex;align-items:center;gap:7px;min-height:38px;padding:0 11px;
+  border-radius:14px;color:#eef0f8;background:linear-gradient(135deg,rgba(255,255,255,.085),rgba(255,255,255,.035));
+  border:1px solid rgba(255,255,255,.11);box-shadow:inset 0 1px 0 rgba(255,255,255,.07),0 8px 24px rgba(0,0,0,.12);
+  backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);font-size:.66rem;
+  font-weight:650;cursor:pointer;transition:.18s ease;touch-action:manipulation
+}
+.filter-chip:hover{background:linear-gradient(135deg,rgba(255,255,255,.12),rgba(255,255,255,.045));border-color:rgba(255,255,255,.18)}
+.filter-chip:active{transform:scale(.97)}
+.filter-chip b{font-weight:800;color:#fff}
+.filter-chip>span:first-child{color:#9da2b6}
+.chip-chevron{font-size:.8rem;color:#aab0c4;transition:transform .18s}
+.filter-chip[aria-expanded="true"] .chip-chevron{transform:rotate(180deg)}
+.vault-filter-menu{
+  display:none;position:absolute;left:0;top:calc(100% - 2px);min-width:210px;
+  padding:7px;border-radius:18px;background:rgba(28,29,38,.94);
+  border:1px solid rgba(255,255,255,.12);box-shadow:0 18px 55px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.06);
+  backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
+  animation:filterPop .16s ease-out
+}
+.vault-filter-menu.open{display:block}
+.vault-filter-menu .filter-menu-title{
+  padding:8px 10px 5px;color:#858a9d;font-size:.58rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em
+}
+.vault-filter-menu button{
+  width:100%;display:flex;align-items:center;justify-content:space-between;
+  padding:10px;border:0;border-radius:11px;background:transparent;color:#e9ebf4;
+  font-size:.68rem;text-align:left;cursor:pointer
+}
+.vault-filter-menu button:hover{background:rgba(255,255,255,.07)}
+.vault-filter-menu button.selected{background:rgba(145,125,255,.14);color:#fff}
+.vault-filter-menu button.selected::after{content:'✓';color:#bcaeff;font-weight:900}
+@keyframes filterPop{from{opacity:0;transform:translateY(-5px) scale(.98)}to{opacity:1;transform:none}}
+
+
+html,body{min-height:100%;-webkit-overflow-scrolling:touch}
+body.modal-open{position:fixed;width:100%;left:0;right:0;overflow:hidden}
+body.modal-open #app{overflow:visible}
+.list,.series-overview-list,.title-breakdown,.time-breakdown{
+  overscroll-behavior-y:auto;-webkit-overflow-scrolling:touch
+}
+.settings-backdrop{touch-action:none}
+
+.vault-search-box{position:relative}
+.discover-search-box{position:relative}
+.vault-search-box #vaultSearchInput{padding-right:42px}
+.discover-search-box #discoverSearchInput{padding-right:42px}
+.vault-search-box .search-clear{
+  right:84px;top:50%;transform:translateY(-50%);
+}
+.discover-search-box .search-clear{
+  right:8px;top:50%;transform:translateY(-50%);
+}
+.vault-search-box .search-clear:active,
+.discover-search-box .search-clear:active{
+  transform:translateY(-50%) scale(.9);
+}
+.search-box .btn-search{min-width:82px}
+
+
+.search-box{
+  gap:7px;
+  padding:5px;
+}
+.search-box .search-icon{flex:0 0 36px}
+.search-box input[type=text]{min-width:0}
+.vault-search-box .search-clear,
+.discover-search-box .search-clear{
+  width:28px;height:28px;
+}
+.discover-search-box .search-icon{margin-right:2px}
+
+
+.search-box{
+  border:1px solid rgba(255,255,255,.075);
+  background:linear-gradient(135deg,rgba(255,255,255,.045),rgba(255,255,255,.018));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.045),0 12px 35px rgba(0,0,0,.16);
+}
+.search-box input[type=text]::placeholder{color:#74798c}
+.section-head{margin-top:18px}
+.card{
+  border:1px solid rgba(255,255,255,.075);
+  background:linear-gradient(145deg,rgba(255,255,255,.052),rgba(255,255,255,.018));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.04),0 10px 32px rgba(0,0,0,.12);
+}
+
+.vault-filter-bar::before{
+  content:'';
+  position:absolute;inset:-5px -8px -7px;
+  border-radius:18px;
+  background:radial-gradient(circle at 18% 0%,rgba(148,120,255,.08),transparent 45%);
+  pointer-events:none;z-index:-1
+}
+.filter-chip span,.filter-chip b,.filter-chip .chip-chevron{position:relative}
+.search-result-extra{font-size:.61rem;color:#a8adbd;margin-top:6px;line-height:1.4}
+.search-alts{font-size:.58rem;color:#858b9e;margin-top:4px;line-height:1.4}
+
+.filter-chip b{
+  min-width:72px;
+  text-align:left;
+  white-space:nowrap;
+  transition:opacity .15s,transform .15s
+}
+.filter-chip.value-updated b{animation:filterValuePop .2s ease-out}
+@keyframes filterValuePop{
+  from{opacity:.25;transform:translateY(2px)}
+  to{opacity:1;transform:none}
+}
+
+.time-filter-bar{
+  display:flex;gap:8px;margin:0 0 11px;padding:2px 1px 4px;
+  position:relative;z-index:25
+}
+.time-filter-chip{
+  flex:1;min-width:0;justify-content:space-between;
+  -webkit-tap-highlight-color:transparent;
+  touch-action:manipulation;
+  user-select:none;-webkit-user-select:none
+}
+.time-filter-chip b{min-width:0;overflow:hidden;text-overflow:ellipsis}
+.time-filter-menu{left:auto;right:0;min-width:220px;z-index:50}
+.filter-chip.is-pressed{
+  transform:scale(.965);
+  background:linear-gradient(135deg,rgba(139,124,255,.25),rgba(255,107,157,.10));
+  border-color:rgba(190,177,255,.28);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.10),0 5px 18px rgba(0,0,0,.22)
+}
+.filter-chip.is-pressed .chip-chevron{transform:rotate(180deg)}
+.vault-filter-menu button{
+  min-height:42px;
+  -webkit-tap-highlight-color:transparent;
+  touch-action:manipulation
+}
+.vault-filter-menu button.is-pressed{
+  background:rgba(139,124,255,.17);
+  transform:scale(.985)
+}
+
+
+.title-info-sheet{max-height:88vh;overflow:auto}
+.title-info-body{display:flex;flex-direction:column;gap:12px}
+.title-info-hero{
+  display:grid;grid-template-columns:78px minmax(0,1fr);gap:13px;
+  padding:12px;border-radius:18px;
+  background:linear-gradient(135deg,rgba(139,124,255,.16),rgba(255,107,157,.07));
+  border:1px solid rgba(255,255,255,.09);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.06)
+}
+.title-info-hero img{
+  width:78px;height:108px;object-fit:cover;border-radius:12px;background:var(--surface3)
+}
+.title-info-main{min-width:0;display:flex;flex-direction:column;justify-content:center}
+.title-info-name{
+  font-size:1rem;font-weight:850;line-height:1.18;overflow-wrap:anywhere
+}
+.title-info-aliases{
+  margin-top:6px;color:#aeb3c1;font-size:.58rem;line-height:1.45;
+  overflow-wrap:anywhere
+}
+.title-info-meta{
+  display:flex;flex-wrap:wrap;gap:5px;margin-top:8px
+}
+.title-info-pill{
+  padding:4px 7px;border-radius:7px;background:rgba(255,255,255,.055);
+  border:1px solid rgba(255,255,255,.07);font-size:.53rem;color:#d9dce6
+}
+.title-info-grid{
+  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px
+}
+.title-info-stat{
+  padding:10px;border-radius:13px;background:rgba(255,255,255,.035);
+  border:1px solid var(--line)
+}
+.title-info-stat span{display:block;font-size:.52rem;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+.title-info-stat b{display:block;margin-top:4px;font-size:.72rem;color:#f4f5f9;overflow-wrap:anywhere}
+.title-info-section{
+  padding:11px;border-radius:15px;background:rgba(255,255,255,.025);
+  border:1px solid rgba(255,255,255,.065)
+}
+.title-info-section h4{
+  font-size:.65rem;text-transform:uppercase;letter-spacing:.07em;color:#aeb4c7;margin-bottom:8px
+}
+.title-release-list{display:flex;flex-direction:column;gap:7px}
+.title-release-detail{
+  display:grid;grid-template-columns:38px minmax(0,1fr) auto;gap:8px;align-items:center;
+  padding:8px;border-radius:11px;background:rgba(0,0,0,.12);
+  border:1px solid rgba(255,255,255,.045)
+}
+.title-release-detail img{width:38px;height:50px;object-fit:cover;border-radius:7px}
+.title-release-name{font-size:.63rem;font-weight:800;line-height:1.25;overflow-wrap:anywhere}
+.title-release-meta{font-size:.53rem;color:var(--muted);margin-top:3px;line-height:1.35}
+.title-release-status{text-align:right;min-width:67px}
+.title-info-note{
+  font-size:.58rem;color:var(--muted);line-height:1.4
+}
+.title-info-open{
+  width:31px;height:31px;border:1px solid rgba(255,255,255,.10);
+  border-radius:9px;background:rgba(255,255,255,.045);color:#dfe2ec;
+  display:grid;place-items:center;flex:none;touch-action:manipulation;
+  transition:transform .16s ease,background .18s ease
+}
+.title-info-open:active{transform:scale(.90);background:rgba(139,124,255,.18)}
+.title-info-loading{
+  padding:36px 15px;text-align:center;color:var(--muted);font-size:.68rem;
+  border:1px dashed var(--line);border-radius:15px
+}
+
+
+.franchise-head{gap:8px}
+.franchise-hit{
+  min-width:0;flex:1;display:flex;align-items:center;gap:10px;
+  border:0;background:transparent;color:inherit;text-align:left;padding:0;
+  -webkit-tap-highlight-color:transparent;touch-action:manipulation
+}
+.franchise-hit:active{transform:scale(.985)}
+.franchise-hit .franchise-main{display:block}
+.franchise-expand{
+  width:34px;height:34px;display:grid;place-items:center;flex:none;
+  border:1px solid rgba(255,255,255,.08);border-radius:10px;
+  background:rgba(255,255,255,.035);color:#afb4c4;font-size:16px;
+  transition:transform .18s ease,background .18s ease
+}
+.franchise-expand:active{transform:scale(.92);background:rgba(139,124,255,.15)}
+.franchise-card.open .franchise-expand{transform:rotate(180deg)}
+
+.franchise-resolver-summary{
+  margin:0 0 9px;padding:9px 10px;border-radius:12px;
+  background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.06);
+  color:#82899a;font-size:.51rem;line-height:1.4
+}
+.franchise-group{margin:9px 0 12px}
+.franchise-group-title{display:flex;justify-content:space-between;margin:0 2px 6px;font-size:.58rem;font-weight:850;color:#d9dce6}
+.franchise-group-title span{font-size:.47rem;color:#858b9b;background:rgba(255,255,255,.045);padding:3px 7px;border-radius:999px}
+.franchise-result{display:flex;align-items:center;gap:8px;padding:9px 10px;margin:5px 0;border:1px solid rgba(255,255,255,.06);border-radius:12px;background:rgba(255,255,255,.023)}
+.franchise-result-main{min-width:0;flex:1}
+.franchise-result-main b{display:block;font-size:.57rem;line-height:1.25;overflow-wrap:anywhere}
+.franchise-result-main small{display:block;margin-top:3px;color:#767d8f;font-size:.44rem;line-height:1.3}
+.franchise-confidence{padding:4px 7px;border-radius:999px;font-size:.42rem;font-weight:850;flex:none}
+.franchise-confidence.confirmed{background:rgba(95,220,157,.10);color:#82e4ad}
+.franchise-confidence.probable{background:rgba(130,155,255,.10);color:#9eafff}
+.franchise-confidence.possible{background:rgba(255,194,90,.09);color:#e7bd68}
+.franchise-empty{padding:16px;text-align:center;color:#747b8c;font-size:.53rem;border:1px dashed rgba(255,255,255,.08);border-radius:13px}
+
+.title-info-panel{z-index:320}
+.series-overview-panel{z-index:220}
+.series-release-title-button{
+  display:flex;align-items:baseline;gap:7px;width:100%;padding:0;margin:0;
+  border:0;background:none;color:inherit;text-align:left;cursor:pointer;
+  font:inherit;min-width:0
+}
+.series-release-title-button>span:first-child{
+  min-width:0;overflow-wrap:anywhere
+}
+.series-release-title-button:hover>span:first-child,
+.series-release-title-button:focus-visible>span:first-child{text-decoration:underline}
+
+/* Manual franchise grouping */
+.header-actions{display:flex;align-items:center;gap:8px}
+.grouping-panel{position:fixed;inset:0;z-index:240;pointer-events:none}
+.grouping-panel.open{pointer-events:auto}
+.grouping-backdrop{position:absolute;inset:0;background:rgba(0,0,0,.62);opacity:0;transition:opacity .22s;touch-action:none}
+.grouping-panel.open .grouping-backdrop{opacity:1}
+.grouping-sheet{
+  position:absolute;right:0;top:0;height:100%;width:min(430px,94vw);
+  background:var(--surface,#151823);border-left:1px solid var(--line);
+  box-shadow:-24px 0 70px rgba(0,0,0,.42);
+  transform:translateX(105%);transition:transform .28s cubic-bezier(.2,.8,.2,1);
+  display:flex;flex-direction:column;overflow:hidden;
+}
+.grouping-panel.open .grouping-sheet{transform:translateX(0)}
+.grouping-head{padding:18px 18px 12px;border-bottom:1px solid var(--line)}
+.grouping-head-row{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.grouping-head h3{font-size:1rem}
+.grouping-head p{color:var(--muted);font-size:.74rem;line-height:1.4;margin-top:5px}
+.grouping-close{width:34px;height:34px;border:1px solid var(--line);border-radius:11px;background:var(--surface3);color:var(--text)}
+.grouping-list{padding:12px 14px 28px;overflow:auto;overscroll-behavior:contain}
+.grouping-card{
+  width:100%;border:1px solid var(--line);background:var(--surface2);
+  border-radius:16px;padding:11px;text-align:left;color:var(--text);
+  margin-bottom:9px;display:flex;gap:11px;align-items:center;
+}
+.grouping-card:hover{border-color:rgba(139,124,255,.45);background:var(--surface3)}
+.grouping-card img{width:48px;height:64px;object-fit:cover;border-radius:10px;flex:none;background:var(--surface3)}
+.grouping-card-main{min-width:0;flex:1}
+.grouping-card-title{font-weight:700;font-size:.84rem;overflow-wrap:anywhere}
+.grouping-card-meta{color:var(--muted);font-size:.68rem;margin-top:4px}
+.grouping-members{display:flex;flex-wrap:wrap;gap:5px;margin-top:7px}
+.grouping-member{font-size:.62rem;padding:4px 7px;border-radius:999px;background:rgba(139,124,255,.10);border:1px solid rgba(139,124,255,.16);color:var(--muted);max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.grouping-edit{flex:none;border:1px solid var(--line);background:var(--surface);color:var(--text);border-radius:10px;padding:7px 9px;font-size:.68rem}
+.grouping-empty{text-align:center;color:var(--muted);padding:42px 18px}
+.grouping-select-head{padding:12px 14px 8px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.grouping-select-head small{color:var(--muted);font-size:.68rem}
+.grouping-merge-btn{
+  border:0;border-radius:11px;padding:8px 11px;background:var(--accent);color:white;
+  font-weight:700;font-size:.72rem;opacity:.45;pointer-events:none;
+}
+.grouping-merge-btn.ready{opacity:1;pointer-events:auto}
+.grouping-option{
+  position:relative;width:100%;display:flex;align-items:center;gap:10px;
+  border:1px solid var(--line);background:var(--surface2);border-radius:14px;
+  padding:9px;text-align:left;color:var(--text);margin-bottom:8px;
+}
+.grouping-option.selected{border-color:var(--accent);background:rgba(139,124,255,.10)}
+.grouping-option input{width:18px;height:18px;accent-color:var(--accent);flex:none}
+.grouping-option img{width:40px;height:54px;border-radius:8px;object-fit:cover;background:var(--surface3);flex:none}
+.grouping-option-main{min-width:0;flex:1}
+.grouping-option-title{font-size:.78rem;font-weight:700;overflow-wrap:anywhere}
+.grouping-option-meta{font-size:.64rem;color:var(--muted);margin-top:3px}
+.grouping-similar{font-size:.6rem;color:var(--accent2);margin-top:5px}
+.grouping-pill{font-size:.6rem;padding:3px 6px;border-radius:999px;background:rgba(255,255,255,.06);color:var(--muted);white-space:nowrap}
+@media(max-width:600px){
+  .grouping-sheet{width:100%;border-left:0;border-radius:22px 0 0 0}
+}
+
+
+.grouping-select-head{padding:11px 14px 9px;align-items:center}
+.grouping-filter-wrap{display:flex;align-items:center;gap:8px;min-width:0}
+.grouping-segment{
+  display:flex;align-items:center;padding:3px;border:1px solid var(--line);
+  background:var(--surface2);border-radius:12px;gap:2px;
+}
+.grouping-segment-btn{
+  appearance:none;-webkit-appearance:none;border:0;outline:0;
+  min-height:32px;padding:0 10px;border-radius:9px;
+  background:transparent;color:var(--muted);
+  font:600 .66rem/1 inherit;letter-spacing:.01em;
+  cursor:pointer;touch-action:manipulation;
+  -webkit-tap-highlight-color:transparent;
+  transition:background .16s ease,color .16s ease,transform .12s ease;
+}
+.grouping-segment-btn:active{transform:scale(.96)}
+.grouping-segment-btn.active{
+  background:var(--surface3);color:var(--text);
+  box-shadow:0 2px 8px rgba(0,0,0,.18);
+}
+.grouping-option{
+  cursor:pointer;touch-action:manipulation;
+  -webkit-tap-highlight-color:transparent;
+  transition:transform .14s ease,border-color .16s ease,background .16s ease,box-shadow .16s ease;
+}
+.grouping-option:active{transform:scale(.985)}
+.grouping-option.selected{
+  box-shadow:0 0 0 1px rgba(139,124,255,.12),0 6px 18px rgba(0,0,0,.12);
+}
+.grouping-option input{
+  appearance:none;-webkit-appearance:none;
+  width:20px;height:20px;border-radius:7px;
+  border:1.5px solid var(--muted);background:transparent;
+  display:grid;place-items:center;margin:0;
+  transition:all .16s ease;cursor:pointer;flex:none;
+}
+.grouping-option input:checked{
+  border-color:var(--accent);background:var(--accent);
+}
+.grouping-option input:checked::after{
+  content:"";width:7px;height:4px;
+  border-left:2px solid #fff;border-bottom:2px solid #fff;
+  transform:rotate(-45deg) translate(1px,-1px);
+}
+.grouping-card,.grouping-close,.grouping-edit,.grouping-merge-btn{
+  touch-action:manipulation;-webkit-tap-highlight-color:transparent;
+}
+.grouping-card:active,.grouping-edit:active,.grouping-close:active,.grouping-merge-btn:active{
+  transform:scale(.985);
+}
+@media(max-width:600px){
+  .grouping-select-head{align-items:flex-start}
+  .grouping-filter-wrap{flex-direction:column;align-items:flex-start;gap:6px}
+  .grouping-segment-btn{min-height:34px;padding:0 12px}
+}
+
+</style>
+</head>
+<body>
+<div class="app">
+  <header>
+    <div class="brand">
+      <div class="brand-mark">✦</div>
+      <div><h1>MIRU</h1><p>Anime & donghua tracker</p></div>
+    </div>
+    <div class="header-actions">
+      <button class="icon-btn" onclick="openGroupingPanel()" aria-label="Manual grouping">⌘</button>
+      <button class="icon-btn" onclick="toggleSettings(true)" aria-label="Settings">⚙</button>
+    </div>
+  </header>
+
+  <section class="hero">
+    <h2>Your watchlist,<br>without the clutter.</h2>
+    <p>Keep your progress, discover new worlds, and never lose your place.</p>
+  </section>
+
+  <div class="stats-card">
+    <button class="stat-box stat-titles" onclick="openTitleDetails()" aria-label="Open title breakdown"><h3 id="statShows">0</h3><p>Titles</p><span>Tap for breakdown ↗</span></button>
+    <div class="stat-box"><h3 id="statEps">0</h3><p>Episodes</p></div>
+    <button class="stat-box stat-time" onclick="openTimeDetails()"><h3 id="statTime">0h</h3><p>Time Watched</p><span>Tap for breakdown ↗</span></button>
+  </div>
+
+  <div class="search-box vault-search-box">
+    <div class="search-icon">⌕</div>
+    <input type="text" id="vaultSearchInput"
+      placeholder="Search your vault..."
+      autocomplete="off"
+      oninput="handleVaultSearchInput()">
+    <button class="search-clear" id="vaultSearchClear" onclick="clearVaultSearch()" aria-label="Clear search" title="Clear search">×</button>
+    <button class="btn-search" id="searchModeButton" onclick="searchFromVaultOrDiscover()">Discover</button>
+  </div>
+
+  <div class="search-box discover-search-box">
+    <div class="search-icon">⌕</div>
+    <input type="text" id="discoverSearchInput"
+      placeholder="Discover anime or donghua..."
+      autocomplete="off"
+      oninput="handleDiscoverSearchInput()">
+    <button class="search-clear" id="discoverSearchClear" onclick="clearDiscoverSearch()" aria-label="Clear search" title="Clear search">×</button>
+  </div>
+
+  <div class="vault-filter-bar" id="vaultFilterBar">
+    <button class="filter-chip" id="sortFilterChip" onclick="toggleVaultFilterMenu('sort')" aria-haspopup="true" aria-expanded="false">
+      <span>Sort</span><b id="sortFilterLabel">Newest added</b><span class="chip-chevron">⌄</span>
+    </button>
+    <button class="filter-chip" id="typeFilterChip" onclick="toggleVaultFilterMenu('type')" aria-haspopup="true" aria-expanded="false">
+      <span>Type</span><b id="typeFilterLabel">All types</b><span class="chip-chevron">⌄</span>
+    </button>
+    <div class="vault-filter-menu" id="vaultFilterMenu" aria-hidden="true"></div>
+  </div>
+
+  <div class="section-head">
+    <h3 id="sectionTitle">Discover</h3><span id="sectionCount"></span>
+  </div>
+  <div id="displayArea" class="list"></div>
+</div>
+
+
+
+
+
+
+<div id="progressConfirm" class="progress-confirm" aria-hidden="true">
+  <div class="progress-confirm-card">
+    <h3 id="progressConfirmTitle">Move title?</h3>
+    <p id="progressConfirmText"></p>
+    <div class="progress-confirm-actions">
+      <button onclick="cancelProgressMove()">Cancel</button>
+      <button class="proceed" onclick="confirmProgressMove()">Proceed</button>
+    </div>
+  </div>
+</div>
+
+
+<div id="titleInfoDetails" class="settings-panel title-info-panel" aria-hidden="true">
+  <div class="settings-backdrop" onclick="closeTitleInfo()"></div>
+  <section class="settings-sheet title-info-sheet">
+    <div class="sheet-grab"></div>
+    <div class="sheet-head">
+      <div>
+        <h3 id="titleInfoHeading">Title Details</h3>
+        <small id="titleInfoSubtitle">Your vault details</small>
+      </div>
+      <button onclick="closeTitleInfo()" aria-label="Close title details">×</button>
+    </div>
+    <div id="titleInfoBody" class="title-info-body"></div>
+  </section>
+</div>
+
+<div id="seriesOverview" class="settings-panel series-overview-panel" aria-hidden="true">
+  <div class="settings-backdrop" onclick="closeSeriesOverview()"></div>
+  <section class="settings-sheet series-sheet">
+    <div class="sheet-grab"></div>
+    <div class="sheet-head">
+      <div>
+        <h3 id="seriesOverviewTitle">Related Releases</h3>
+        <small id="seriesOverviewSubtitle">Published related titles</small>
+      </div>
+      <button onclick="closeSeriesOverview()">×</button>
+    </div>
+
+    <div class="related-summary" id="relatedSummary">Related releases in this franchise</div>
+    <div id="seriesOverviewList" class="series-overview-list"></div>
+  </section>
+</div>
+
+<div id="titleDetails" class="settings-panel title-details-panel" aria-hidden="true">
+  <div class="settings-backdrop" onclick="closeTitleDetails()"></div>
+  <section class="settings-sheet title-sheet">
+    <div class="sheet-grab"></div>
+    <div class="sheet-head">
+      <div>
+        <h3>Title Breakdown</h3>
+        <small id="titleSummary">Loading your library map…</small>
+      </div>
+      <button onclick="closeTitleDetails()">×</button>
+    </div>
+
+    <div class="title-tabs" role="tablist" aria-label="Title categories">
+      <button class="title-tab active" data-category="SEASONS" onclick="setTitleCategory('SEASONS')">Seasons</button>
+      <button class="title-tab" data-category="MOVIES" onclick="setTitleCategory('MOVIES')">Movies</button>
+      <button class="title-tab" data-category="SPECIALS" onclick="setTitleCategory('SPECIALS')">Specials</button>
+      <button class="title-tab" data-category="OVAS" onclick="setTitleCategory('OVAS')">OVAs</button>
+    </div>
+
+    <div id="titleCountStrip" class="title-count-strip"></div>
+    <div id="titleBreakdown" class="title-breakdown-list"></div>
+  </section>
+</div>
+
+<div id="timeDetails" class="settings-panel" aria-hidden="true">
+  <div class="settings-backdrop" onclick="closeTimeDetails()"></div>
+  <section class="settings-sheet time-sheet">
+    <div class="sheet-grab"></div>
+    <div class="sheet-head"><div><h3>Time Watched</h3><small id="timeSummary"></small></div><button onclick="closeTimeDetails()">×</button></div>
+    <div class="time-filter-bar" id="timeFilterBar">
+      <button class="filter-chip time-filter-chip" id="timeSortChip" onclick="toggleTimeFilterMenu('sort')" aria-haspopup="true" aria-expanded="false">
+        <span>Sort</span><b id="timeSortLabel">Most watched</b><span class="chip-chevron">⌄</span>
+      </button>
+      <button class="filter-chip time-filter-chip" id="timeTypeChip" onclick="toggleTimeFilterMenu('type')" aria-haspopup="true" aria-expanded="false">
+        <span>Type</span><b id="timeTypeLabel">All types</b><span class="chip-chevron">⌄</span>
+      </button>
+      <div class="time-filter-menu vault-filter-menu" id="timeFilterMenu" aria-hidden="true"></div>
+    </div>
+    <div id="timeBreakdown" class="time-breakdown"></div>
+  </section>
+</div>
+
+
+<div id="groupingPanel" class="grouping-panel" aria-hidden="true">
+  <div class="grouping-backdrop" onclick="closeGroupingPanel()"></div>
+  <section class="grouping-sheet" aria-label="Manual title grouping">
+    <div class="grouping-head">
+      <div class="grouping-head-row">
+        <div>
+          <h3>Group titles</h3>
+          <p>Choose which vault titles belong to the same franchise. MIRU will not merge them automatically.</p>
+        </div>
+        <button class="grouping-close" onclick="closeGroupingPanel()">×</button>
+      </div>
+    </div>
+    <div id="groupingList" class="grouping-list"></div>
+  </section>
+</div>
+
+<div id="groupingPicker" class="grouping-panel" aria-hidden="true">
+  <div class="grouping-backdrop" onclick="closeGroupingPicker()"></div>
+  <section class="grouping-sheet" aria-label="Select titles to merge">
+    <div class="grouping-head">
+      <div class="grouping-head-row">
+        <div>
+          <h3 id="groupingPickerTitle">Merge titles</h3>
+          <p id="groupingPickerHint">Select vault titles that belong with this title.</p>
+        </div>
+        <button class="grouping-close" onclick="closeGroupingPicker()">×</button>
+      </div>
+    </div>
+    <div class="grouping-select-head">
+      <div class="grouping-filter-wrap">
+        <small id="groupingSelectionCount">0 selected</small>
+        <div class="grouping-segment" role="group" aria-label="Sort grouped titles">
+          <button type="button" class="grouping-segment-btn active" data-sort="oldest" onclick="setGroupingSort('oldest')">Oldest</button>
+          <button type="button" class="grouping-segment-btn" data-sort="newest" onclick="setGroupingSort('newest')">Newest</button>
+        </div>
+      </div>
+      <button id="groupingMergeButton" class="grouping-merge-btn" onclick="mergeSelectedTitles()">Merge selected</button>
+    </div>
+    <div id="groupingPickerList" class="grouping-list"></div>
+  </section>
+</div>
+
+<div id="settingsPanel" class="settings-panel" aria-hidden="true">
+  <div class="settings-backdrop" onclick="toggleSettings(false)"></div>
+  <section class="settings-sheet">
+    <div class="sheet-grab"></div>
+    <div class="sheet-head"><h3>Settings</h3><button onclick="toggleSettings(false)">×</button></div>
+    <label class="setting-row">
+      <span><b>Default OP / ED exclusion</b><small>Fallback for titles without their own setting</small></span>
+      <select id="skipMinutes" onchange="saveSkipMinutes(this.value)">
+        <option value="0">Off</option>
+        <option value="2">2 min</option>
+        <option value="3">3 min</option>
+        <option value="4">4 min</option>
+        <option value="5">5 min</option>
+      </select>
+    </label>
+  </section>
+</div>
+<nav class="bottom-nav">
+  <button class="nav-btn active" onclick="setTab('search')"><span>⌂</span>Discover</button>
+  <button class="nav-btn" onclick="setTab('Watching')"><span>▶</span>Watching</button>
+  <button class="nav-btn" onclick="setTab('Planning')"><span>＋</span>Planning</button>
+  <button class="nav-btn" onclick="setTab('Completed')"><span>✓</span>Completed</button>
+  <button class="nav-btn" onclick="setTab('Dropped')"><span>×</span>Dropped</button>
+</nav>
+<script>
+    let vault = JSON.parse(localStorage.getItem('otakuVaultData')) || [];
+    let currentTab = 'search';
+    let results = [];
+    let searchTimer = null;
+    let vaultSearchResults = [];
+    let searchMode = 'vault';
+    let vaultSort = 'newest';
+    let vaultType = 'all';
+    let timeSort = 'most';
+    let timeType = 'all';
+
+    let seriesOverviewId = null;
+    let relatedAddAnimatingId = null;
+    let relatedGraph = null;
+
+    let progressHoldTimer = null;
+    let progressHoldInterval = null;
+    let progressHoldButton = null;
+    let progressHoldState = null;
+    let suppressNextProgressClick = false;
+    let pendingProgressMove = null;
+
+    let titleGroups = [];
+    let titleCategory = 'SEASONS';
+    let relationCache = JSON.parse(localStorage.getItem('miruRelationCache') || '{}');
+    let titleGroupsReady = false;
+    let titleBuildPromise = null;
+    let activeTitleInfoGroupId = null;
+    let titleInfoCache = {};
+
+    // Upgrade older vault records using metadata already cached by MIRU.
+    // This keeps vault search local: no new network request is made here.
+    function hydrateLegacyVaultNames() {
+      let changed = false;
+      vault.forEach(item => {
+        const cached = relationCache[item.id];
+        const root = cached?.root;
+        const title = root?.title;
+        if (!title) return;
+
+        const before = JSON.stringify([
+          item.englishTitle,item.romajiTitle,item.nativeTitle,item.userPreferredTitle,item.synonyms
+        ]);
+
+        item.englishTitle = item.englishTitle || title.english || '';
+        item.romajiTitle = item.romajiTitle || title.romaji || '';
+        item.nativeTitle = item.nativeTitle || title.native || '';
+        item.userPreferredTitle = item.userPreferredTitle || title.userPreferred || '';
+        item.synonyms = Array.from(new Set([
+          ...(item.synonyms || []),
+          ...(root.synonyms || [])
+        ])).slice(0, 12);
+
+        changed = changed || before !== JSON.stringify([
+          item.englishTitle,item.romajiTitle,item.nativeTitle,item.userPreferredTitle,item.synonyms
+        ]);
+      });
+
+      if (changed) localStorage.setItem('otakuVaultData', JSON.stringify(vault));
+    }
+
+    hydrateLegacyVaultNames();
+    titleGroupsReady = false;
+    titleGroups = [];
+
+    function save() {
+      localStorage.setItem('otakuVaultData', JSON.stringify(vault));
+      updateStats();
+    }
+
+    function setModalScrollLock(locked) {
+      const body = document.body, root = document.documentElement;
+      if (locked) {
+        if (!body.classList.contains('modal-open')) {
+          window.__miruScrollY = window.scrollY || window.pageYOffset || 0;
+          body.style.setProperty('--miru-scroll-y', `${window.__miruScrollY}px`);
+        }
+        body.classList.add('modal-open');
+        root.classList.add('modal-open');
+      } else {
+        body.classList.remove('modal-open');
+        root.classList.remove('modal-open');
+        body.style.removeProperty('--miru-scroll-y');
+        requestAnimationFrame(() => window.scrollTo(0, window.__miruScrollY || 0));
+      }
+    }
+
+    function formatMinutes(minutes) {
+      minutes = Math.max(0, Math.round(minutes));
+      const h = Math.floor(minutes / 60);
+      const m = minutes % 60;
+      return h ? `${h}h ${m}m` : `${m}m`;
+    }
+
+
+    function globalSkipMinutes() {
+      const raw = localStorage.getItem('miruSkipMinutes');
+      return raw === null ? 3 : Math.max(0, Number(raw) || 0);
+    }
+
+    function titleSkipMinutes(item) {
+      // null/undefined means "use the global default".
+      if (item && item.skipMinutes !== undefined && item.skipMinutes !== null) {
+        return Math.max(0, Number(item.skipMinutes) || 0);
+      }
+      return globalSkipMinutes();
+    }
+
+    function saveTitleSkipMinutes(id, value) {
+      const item = vault.find(s => s.id === id);
+      if (!item) return;
+
+      const numeric = Math.max(0, Math.min(60, Number(value) || 0));
+      item.skipMinutes = numeric;
+      save();
+
+      // Refresh only the time UI. Do not call render(), which can reorder
+      // library sections while the user is editing time settings.
+      openTimeDetails();
+    }
+
+    function resetTitleSkipMinutes(id) {
+      const item = vault.find(s => s.id === id);
+      if (!item) return;
+
+      delete item.skipMinutes;
+      save();
+      openTimeDetails();
+    }
+
+    function watchedMinutes(item) {
+      const watched = item.status === 'Completed' && item.episodes !== '?'
+        ? Number(item.episodes)
+        : (item.progress || 0);
+
+      const skip = titleSkipMinutes(item);
+      return Math.max(0, watched * Math.max(0, (item.duration || 24) - skip));
+    }
+
+    function adjustTitleSkipMinutes(id, delta) {
+      const item = vault.find(s => s.id === id);
+      if (!item) return;
+
+      const current = titleSkipMinutes(item);
+      const next = Math.max(0, Math.min(60, current + delta));
+      item.skipMinutes = next;
+      save();
+      openTimeDetails();
+    }
+
+    function setTitleSkipMinutes(id, value) {
+      saveTitleSkipMinutes(id, value);
+    }
+
+    function toggleTimeFilterMenu(kind) {
+      const menu = document.getElementById('timeFilterMenu');
+      if (!menu) return;
+
+      const open = menu.classList.contains('open');
+      if (open && menu.dataset.kind === kind) {
+        closeTimeFilterMenu();
+        return;
+      }
+
+      menu.dataset.kind = kind;
+      const sortOptions = [
+        ['most','Most watched'],
+        ['least','Least watched'],
+        ['newest','Newest added'],
+        ['oldest','Oldest added'],
+        ['a-z','A–Z'],
+        ['z-a','Z–A']
+      ];
+      const typeOptions = [
+        ['all','All types'],
+        ['anime','Anime'],
+        ['donghua','Donghua'],
+        ['movie','Movies'],
+        ['ova','OVAs'],
+        ['special','Specials']
+      ];
+      const options = kind === 'sort' ? sortOptions : typeOptions;
+      const current = kind === 'sort' ? timeSort : timeType;
+
+      menu.innerHTML =
+        `<div class="filter-menu-title">${kind === 'sort' ? 'Sort by' : 'Filter by type'}</div>` +
+        options.map(([value,label]) =>
+          `<button class="${value === current ? 'selected' : ''}"
+             onclick="${kind === 'sort' ? `setTimeSort('${value}')` : `setTimeType('${value}')`}">${label}</button>`
+        ).join('');
+
+      menu.classList.add('open');
+      menu.setAttribute('aria-hidden','false');
+      document.getElementById('timeSortChip')?.setAttribute('aria-expanded', String(kind === 'sort'));
+      document.getElementById('timeTypeChip')?.setAttribute('aria-expanded', String(kind === 'type'));
+    }
+
+    function closeTimeFilterMenu() {
+      const menu = document.getElementById('timeFilterMenu');
+      if (menu) {
+        menu.classList.remove('open');
+        menu.setAttribute('aria-hidden','true');
+      }
+      document.getElementById('timeSortChip')?.setAttribute('aria-expanded','false');
+      document.getElementById('timeTypeChip')?.setAttribute('aria-expanded','false');
+    }
+
+    function setTimeSort(value) {
+      timeSort = value;
+      closeTimeFilterMenu();
+      openTimeDetails();
+      animateFilterChip('timeSortChip');
+    }
+
+    function setTimeType(value) {
+      timeType = value;
+      closeTimeFilterMenu();
+      openTimeDetails();
+      animateFilterChip('timeTypeChip');
+    }
+
+    function updateTimeFilterLabels() {
+      const sortLabels = {
+        most:'Most watched',least:'Least watched',newest:'Newest added',
+        oldest:'Oldest added','a-z':'A–Z','z-a':'Z–A'
+      };
+      const typeLabels = {
+        all:'All types',anime:'Anime',donghua:'Donghua',
+        movie:'Movies',ova:'OVAs',special:'Specials'
+      };
+      const sortLabel = document.getElementById('timeSortLabel');
+      const typeLabel = document.getElementById('timeTypeLabel');
+      if (sortLabel) sortLabel.textContent = sortLabels[timeSort] || 'Most watched';
+      if (typeLabel) typeLabel.textContent = typeLabels[timeType] || 'All types';
+    }
+
+    function animateFilterChip(id) {
+      const chip = document.getElementById(id);
+      if (!chip) return;
+      chip.classList.remove('value-updated');
+      void chip.offsetWidth;
+      chip.classList.add('value-updated');
+    }
+
+    function openTimeDetails() {
+      const panel = document.getElementById('timeDetails');
+      const breakdown = document.getElementById('timeBreakdown');
+
+      // Keep the same order as the vault. Changing an exclusion value must
+      // never reshuffle the user's titles.
+      let items = vault.map((item, index) => ({
+        item,
+        minutes: watchedMinutes(item),
+        index
+      })).filter(x => x.minutes > 0);
+
+      const matchesTimeType = (item, type) => {
+        if (type === 'all') return true;
+        const format = String(item.format || '').toUpperCase();
+        if (type === 'donghua') return format === 'DONGHUA' || item.countryOfOrigin === 'CN';
+        if (type === 'anime') return !['MOVIE','OVA','SPECIAL'].includes(format) &&
+          format !== 'DONGHUA' && item.countryOfOrigin !== 'CN';
+        return format === type.toUpperCase();
+      };
+
+      items = items.filter(x => matchesTimeType(x.item, timeType));
+
+      items.sort((a,b) => {
+        switch (timeSort) {
+          case 'most': return b.minutes - a.minutes || a.index - b.index;
+          case 'least': return a.minutes - b.minutes || a.index - b.index;
+          case 'newest': return b.index - a.index;
+          case 'oldest': return a.index - b.index;
+          case 'a-z': return String(a.item.title || '').localeCompare(String(b.item.title || ''));
+          case 'z-a': return String(b.item.title || '').localeCompare(String(a.item.title || ''));
+          default: return a.index - b.index;
+        }
+      });
+
+      updateTimeFilterLabels();
+
+      const total = items.reduce((s,x) => s + x.minutes, 0);
+
+      document.getElementById('timeSummary').textContent =
+        `${formatMinutes(total)} total`;
+
+      breakdown.innerHTML = `
+        <div class="time-total">
+          <b>${formatMinutes(total)}</b>
+          across ${items.length} watched title${items.length === 1 ? '' : 's'}
+        </div>
+        <div class="time-note">
+          Set OP/ED exclusion separately for each title. Titles without a custom value use your default.
+        </div>`;
+
+      if (!items.length) {
+        breakdown.innerHTML +=
+          '<div class="empty-state">Watch an episode and your time breakdown will appear here.</div>';
+      } else {
+        items.forEach(({item, minutes}) => {
+          const watched = item.status === 'Completed' && item.episodes !== '?'
+            ? Number(item.episodes)
+            : (item.progress || 0);
+
+          const skip = titleSkipMinutes(item);
+          const effective = Math.max(0, (item.duration || 24) - skip);
+          const hasCustom = item.skipMinutes !== undefined && item.skipMinutes !== null;
+
+          breakdown.insertAdjacentHTML('beforeend', `
+            <div class="time-item">
+              <img src="${item.image}" alt="">
+              <div class="time-item-main">
+                <div class="name">${item.title}</div>
+                <div class="detail">
+                  ${watched}/${item.episodes} eps • ${effective}m counted/ep
+                </div>
+                <div class="title-skip-control">
+                  <span class="skip-label">Exclude / episode</span>
+                  <div class="skip-stepper" aria-label="Minutes to exclude per episode">
+                    <button type="button" onclick="adjustTitleSkipMinutes(${item.id}, -1)" aria-label="Decrease exclusion">−</button>
+                    <span class="skip-value" role="status" aria-label="Current exclusion">${skip}<small>m</small></span>
+                    <button type="button" onclick="adjustTitleSkipMinutes(${item.id}, 1)" aria-label="Increase exclusion">+</button>
+                  </div>
+                  ${hasCustom
+                    ? `<button class="reset-title-skip" onclick="resetTitleSkipMinutes(${item.id})">Default</button>`
+                    : `<span class="using-default">default</span>`}
+                </div>
+              </div>
+              <div class="amount">
+                ${formatMinutes(minutes)}
+                <small>watched</small>
+              </div>
+            </div>`);
+        });
+      }
+
+      panel.classList.add('open');
+      panel.setAttribute('aria-hidden','false');
+      setModalScrollLock(true);
+    }
+
+
+    function closeTimeDetails() {
+      const panel = document.getElementById('timeDetails');
+      panel.classList.remove('open');
+      panel.setAttribute('aria-hidden','true');
+      if (!document.querySelector('.settings-panel.open')) setModalScrollLock(false);
+    }
+
+    function toggleSettings(open) {
+      cancelProgressMove();
+      closeTimeDetails();
+      closeTitleDetails();
+      closeTitleInfo();
+      closeSeriesOverview();
+      const panel = document.getElementById('settingsPanel');
+      panel.classList.toggle('open', open);
+      panel.setAttribute('aria-hidden', open ? 'false' : 'true');
+      if (open) setModalScrollLock(true);
+      else if (!document.querySelector('.settings-panel.open') &&
+               !document.querySelector('.grouping-panel.open')) setModalScrollLock(false);
+      if (open) {
+        document.getElementById('skipMinutes').value = String(Number(localStorage.getItem('miruSkipMinutes')) || 3);
+      }
+    }
+
+    function saveSkipMinutes(value) {
+      localStorage.setItem('miruSkipMinutes', String(value));
+      updateStats();
+    }
+
+    function updateStats() {
+      const totalShows = titleGroupsReady ? titleGroups.length : vault.length;
+      const totalEps = vault.reduce((sum, item) => sum + (item.progress || 0), 0);
+
+      const totalMinutes = vault.reduce((sum, item) => {
+        const watched = item.status === 'Completed' && item.episodes !== '?'
+          ? Number(item.episodes)
+          : (item.progress || 0);
+
+        const effectiveDuration = Math.max(
+          0,
+          (item.duration || 24) - titleSkipMinutes(item)
+        );
+
+        return sum + (watched * effectiveDuration);
+      }, 0);
+
+      const hours = Math.floor(totalMinutes / 60);
+      const days = (hours / 24).toFixed(1);
+
+      document.getElementById('statShows').innerText = totalShows;
+      document.getElementById('statEps').innerText = totalEps;
+      document.getElementById('statTime').innerText =
+        hours > 48 ? `${days}d` : `${hours}h`;
+    }
+
+
+    const RELATED_RELATIONS = new Set([
+      'PREQUEL','SEQUEL','PARENT','SIDE_STORY','SPIN_OFF','SUMMARY',
+      'ALTERNATIVE','OTHER','COMPILATION','CONTAINS','ADAPTATION'
+    ]);
+
+    // Used ONLY for the main-title counter. This must stay conservative:
+    // one franchise can contain many releases, but unrelated titles must
+    // never become one group because of a loose relation.
+    const TITLE_GROUP_RELATIONS = new Set([
+      'PREQUEL','SEQUEL','PARENT','SIDE_STORY','SPIN_OFF'
+    ]);
+
+    async function fetchMediaRelations(id, forceRefresh = false) {
+      if (!forceRefresh && relationCache[id]) return relationCache[id];
+
+      const query = `
+        query ($id: Int) {
+          Media(id: $id, type: ANIME) {
+            id
+            title { romaji english native userPreferred }
+            synonyms
+            type
+            format
+            episodes
+            duration
+            coverImage { medium large }
+            startDate { year month day }
+            status
+            relations {
+              edges {
+                relationType
+                node {
+                  id
+                  type
+                  format
+                  title { romaji english native userPreferred }
+                  synonyms
+                  episodes
+                  duration
+                  coverImage { medium large }
+                  startDate { year month day }
+                  status
+                }
+              }
+              pageInfo {
+                hasNextPage
+              }
+            }
+          }
+        }
+      `;
+
+      const response = await fetch('https://graphql.anilist.co', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({ query, variables: { id } })
+      });
+
+      if (!response.ok) throw new Error(`AniList request failed (${response.status})`);
+      const payload = await response.json();
+
+      if (payload.errors?.length) {
+        throw new Error(payload.errors.map(e => e.message).join('; '));
+      }
+
+      const media = payload?.data?.Media;
+      if (!media) throw new Error('AniList returned no media');
+
+      const data = {
+        root: {
+          id: media.id,
+          type: media.type,
+          title: media.title,
+          synonyms: media.synonyms || [],
+          format: media.format,
+          episodes: media.episodes,
+          duration: media.duration,
+          coverImage: media.coverImage,
+          startDate: media.startDate,
+          status: media.status
+        },
+        edges: (media.relations?.edges || [])
+          .filter(edge => edge?.node?.type === 'ANIME' && RELATED_RELATIONS.has(edge.relationType))
+          .map(edge => ({
+            relationType: edge.relationType,
+            ...edge.node,
+            synonyms: edge.node?.synonyms || []
+          }))
+      };
+
+      relationCache[id] = data;
+      localStorage.setItem('miruRelationCache', JSON.stringify(relationCache));
+      return data;
+    }
+
+    async function fetchRelatedUniverse(rootId, maxDepth = 3, forceRefresh = false) {
+      const visited = new Set([rootId]);
+      const queue = [{ id: rootId, depth: 0 }];
+      const mediaMap = new Map();
+
+      while (queue.length) {
+        const { id, depth } = queue.shift();
+        let data;
+
+        try {
+          data = await fetchMediaRelations(id, forceRefresh && depth === 0);
+        } catch (error) {
+          console.warn('Related release lookup failed for', id, error);
+          continue;
+        }
+
+        if (data?.root) mediaMap.set(data.root.id, { ...data.root, relationType: 'CURRENT' });
+
+        for (const edge of (data?.edges || [])) {
+          // Never expose or traverse through an unreleased media node.
+          if (!isReleasedMedia(edge)) continue;
+
+          if (!mediaMap.has(edge.id)) mediaMap.set(edge.id, edge);
+
+          if (depth < maxDepth && !visited.has(edge.id)) {
+            visited.add(edge.id);
+            queue.push({ id: edge.id, depth: depth + 1 });
+          }
+        }
+      }
+
+      return [...mediaMap.values()];
+    }
+
+
+    /* =========================
+       MIRU Franchise Resolver
+       ========================= */
+    const FRANCHISE_CONFIDENCE = { CONFIRMED:.90, PROBABLE:.72, POSSIBLE:.52 };
+
+    function franchiseNormalize(value){
+      return String(value || '').toLowerCase().normalize('NFKD')
+        .replace(/[\u0300-\u036f]/g,'')
+        .replace(/[^a-z0-9\u4e00-\u9fff\u3040-\u30ff]+/g,' ')
+        .replace(/\b(19|20)\d{2}\b/g,' ')
+        .replace(/\b(season|part|cour|arc|episode|episodes|movie|film|special|ova|ona)\b/g,' ')
+        .replace(/\s+/g,' ').trim();
+    }
+
+    function franchiseNames(item){
+      const t=item?.title || {};
+      const names=[
+        t.english,t.romaji,t.native,t.userPreferred,
+        item?.englishTitle,item?.romajiTitle,item?.nativeTitle,
+        item?.userPreferredTitle,item?.title,item?.name
+      ];
+      if(Array.isArray(item?.synonyms)) names.push(...item.synonyms);
+      if(Array.isArray(t?.synonyms)) names.push(...t.synonyms);
+      return [...new Set(names.filter(Boolean).map(franchiseNormalize).filter(Boolean))];
+    }
+
+    function franchiseRelations(item){
+      const relations=[
+        ...(Array.isArray(item?.relations?.edges) ? item.relations.edges : []),
+        ...(Array.isArray(item?.relatedMedia) ? item.relatedMedia : [])
+      ];
+      return relations
+        .map(r=>({node:r?.node || r?.media || r, relation:String(r?.relationType || r?.relation || '').toLowerCase()}))
+        .filter(x=>x.node?.id);
+    }
+
+    function franchiseRelationStrength(relation){
+      if(/sequel|prequel|parent|side_story|spin_off|adaptation/.test(relation)) return .95;
+      if(/alternative|other|summary|compilation/.test(relation)) return .80;
+      return .55;
+    }
+
+    function franchiseDate(item){
+      const d=item?.startDate || item?.releaseDate || item?.airedFrom;
+      if(!d) return 0;
+      if(typeof d === 'string'){
+        const t=Date.parse(d);
+        return Number.isFinite(t) ? t : 0;
+      }
+      return d.year ? new Date(Number(d.year),Number(d.month||1)-1,Number(d.day||1)).getTime() : 0;
+    }
+
+    function franchiseTitleSimilarity(a,b){
+      const A=franchiseNames(a), B=franchiseNames(b);
+      let best=0;
+      for(const x of A) for(const y of B){
+        if(x===y) best=Math.max(best,.82);
+        else if(x.startsWith(y) || y.startsWith(x)) best=Math.max(best,.62);
+        else if(x.includes(y) || y.includes(x)) best=Math.max(best,.48);
+      }
+      return best;
+    }
+
+    function resolveFranchiseRelationship(source,candidate){
+      if(!source || !candidate || String(source.id)===String(candidate.id))
+        return {status:'self',score:0,reasons:[]};
+
+      let score=0, reasons=[];
+      const direct=franchiseRelations(source).find(x=>String(x.node?.id)===String(candidate.id));
+      const reverse=franchiseRelations(candidate).find(x=>String(x.node?.id)===String(source.id));
+
+      if(direct){ score=Math.max(score,franchiseRelationStrength(direct.relation)); reasons.push('official relationship'); }
+      if(reverse){ score=Math.max(score,franchiseRelationStrength(reverse.relation)); reasons.push('official reverse relationship'); }
+
+      const similarity=franchiseTitleSimilarity(source,candidate);
+      if(similarity){
+        score=Math.max(score,similarity);
+        reasons.push(similarity>=.8?'matching alternate title':similarity>=.6?'strong title similarity':'partial title similarity');
+      }
+
+      const da=franchiseDate(source), db=franchiseDate(candidate);
+      if(da && db && Math.abs(new Date(da).getFullYear()-new Date(db).getFullYear())<=12) score += .06;
+
+      if(score>=FRANCHISE_CONFIDENCE.CONFIRMED || direct || reverse)
+        return {status:'confirmed',score:Math.min(score,1),reasons};
+      if(score>=FRANCHISE_CONFIDENCE.PROBABLE)
+        return {status:'probable',score:Math.min(score,1),reasons};
+      if(score>=FRANCHISE_CONFIDENCE.POSSIBLE)
+        return {status:'possible',score:Math.min(score,1),reasons};
+      return {status:'unrelated',score:Math.min(score,1),reasons};
+    }
+
+    function franchiseBucket(item){
+      const f=String(item?.format || item?.type || '').toLowerCase();
+      if(/movie|film/.test(f)) return 'Movies';
+      if(/ova/.test(f)) return 'OVAs';
+      if(/special/.test(f)) return 'Specials';
+      if(/ona/.test(f)) return 'ONAs';
+      return 'Seasons';
+    }
+
+    function buildFranchiseOverview(source,candidates){
+      const all=(candidates || [])
+        .map(candidate=>({candidate,match:resolveFranchiseRelationship(source,candidate)}))
+        .filter(x=>!['unrelated','self'].includes(x.match.status))
+        .sort((a,b)=>b.match.score-a.match.score);
+
+      const groups={Seasons:[],Movies:[],Specials:[],OVAs:[],ONAs:[]};
+      all.forEach(x=>groups[franchiseBucket(x.candidate)].push(x));
+
+      return {
+        source,groups,all,
+        confirmed:all.filter(x=>x.match.status==='confirmed'),
+        probable:all.filter(x=>x.match.status==='probable'),
+        possible:all.filter(x=>x.match.status==='possible')
+      };
+    }
+
+    function franchiseStatusBadge(status){
+      const label=status==='confirmed'?'Confirmed':status==='probable'?'Probable':'Possible';
+      return `<span class="franchise-confidence ${status}">${label}</span>`;
+    }
+
+    function renderFranchiseResolver(panel,overview){
+      if(!panel || !overview) return;
+      const rows=Object.entries(overview.groups)
+        .filter(([,items])=>items.length)
+        .map(([label,items])=>`
+          <section class="franchise-group">
+            <div class="franchise-group-title">${escapeHtml(label)} <span>${items.length}</span></div>
+            ${items.map(({candidate,match})=>`
+              <div class="franchise-result">
+                <div class="franchise-result-main">
+                  <b>${escapeHtml(mediaTitle(candidate))}</b>
+                  <small>${escapeHtml(match.reasons.join(' • ') || 'Supporting metadata')}</small>
+                </div>
+                ${franchiseStatusBadge(match.status)}
+              </div>`).join('')}
+          </section>`).join('');
+
+      panel.innerHTML = rows || '<div class="franchise-empty">No confident franchise relationships found.</div>';
+    }
+    function mediaTitle(media) {
+      return media?.title?.english || media?.title?.romaji || media?.title?.native || 'Untitled';
+    }
+
+    function dateValue(media) {
+      const d = media?.startDate;
+      if (!d?.year) return Infinity;
+      return (d.year * 10000) + ((d.month || 1) * 100) + (d.day || 1);
+    }
+
+    function isReleasedMedia(media) {
+      if (!media) return false;
+
+      // AniList uses NOT_YET_RELEASED for announced/future entries.
+      if (media.status === 'NOT_YET_RELEASED') return false;
+
+      // If AniList has a known first official release date in the future,
+      // never show it as an already released related title.
+      const d = media.startDate;
+      if (d && d.year) {
+        const month = d.month || 1;
+        const day = d.day || 1;
+        const releaseDate = new Date(d.year, month - 1, day);
+        const today = new Date();
+        today.setHours(23, 59, 59, 999);
+        if (releaseDate > today) return false;
+      }
+
+      // Avoid entries with no release status/date that are merely placeholders.
+      // A completed or currently releasing title is safe; an explicitly
+      // cancelled/hiatus entry can still be historically released.
+      return media.status !== 'NOT_YET_RELEASED';
+    }
+
+    function categoryForFormat(format) {
+      const f = String(format || '').toUpperCase();
+      if (f === 'MOVIE') return 'MOVIES';
+      if (f === 'SPECIAL') return 'SPECIALS';
+      if (f === 'OVA') return 'OVAS';
+      if (f === 'TV' || f === 'ONA' || f === 'ANIME' || f === 'DONGHUA') return 'SEASONS';
+      return null;
+    }
+
+    function vaultItem(id) {
+      return vault.find(v => v.id === id) || null;
+    }
+
+    function relationIsSeriesLike(relationType) {
+      return ['PREQUEL','SEQUEL','PARENT','SIDE_STORY','SPIN_OFF','SUMMARY','ALTERNATIVE','OTHER','COMPILATION','CONTAINS'].includes(relationType);
+    }
+
+
+    function franchiseInstallmentClean(value){
+      return franchiseNormalize(value)
+        .replace(/\b(?:ii|iii|iv|v|vi|vii|viii|ix|x)\b/g,' ')
+        .replace(/\b(?:season|part|cour|arc|the|movie|film|special|ova|ona)\b/g,' ')
+        .replace(/\b(?:s|ss)\d+\b/g,' ')
+        .replace(/\b\d+\b/g,' ')
+        .replace(/\s+/g,' ').trim();
+    }
+
+    function franchiseAliasKeys(item){
+      const names = franchiseNames(item);
+      const keys = new Set();
+      for(const name of names){
+        const key = franchiseInstallmentClean(name);
+        if(key) keys.add(key);
+        const tokens = key.split(' ').filter(Boolean);
+        if(tokens.length >= 2){
+          // A compact key catches "Soul Land", "Soul Land 2", etc.
+          keys.add(tokens.slice(0, Math.min(tokens.length, 4)).join(' '));
+        }
+      }
+      return [...keys];
+    }
+
+    function likelySameFranchise(a,b){
+      /*
+       * Name matching is only a FALLBACK. Never merge titles merely because
+       * they share a word or because a cleaned prefix happens to match.
+       *
+       * Examples:
+       *   Soul Land / Soul Land 2 -> same canonical key
+       *   Battle Through the Heavens / Soul Land -> different
+       *   random titles containing "Land" -> different
+       */
+      const A=franchiseNames(a), B=franchiseNames(b);
+      if(!A.length || !B.length) return false;
+
+      const canonical = value => {
+        const n = franchiseNormalize(value);
+        if(!n) return '';
+        return n
+          .replace(/\b(?:season|part|cour|arc|movie|film|special|ova|ona)\s*(?:[ivx]+|\d+)?\b/g,' ')
+          .replace(/\bs\d+\b/g,' ')
+          .replace(/\b(?:ii|iii|iv|v|vi|vii|viii|ix|x|\d+)\b/g,' ')
+          .replace(/\s+/g,' ').trim();
+      };
+
+      const aKeys=[...new Set(A.map(canonical).filter(k=>k.split(' ').length>=2))];
+      const bKeys=[...new Set(B.map(canonical).filter(k=>k.split(' ').length>=2))];
+
+      // Exact canonical alias only. No partial-token or overlap matching.
+      return aKeys.some(x => bKeys.includes(x));
+    }
+
+    function vaultMediaForFranchise(item, metadata){
+      const cached = metadata.get(Number(item.id)) || relationCache[item.id]?.root;
+      return {
+        id:item.id,
+        title:cached?.title || {
+          english:item.englishTitle || item.title,
+          romaji:item.romajiTitle || item.title,
+          native:item.nativeTitle || '',
+          userPreferred:item.userPreferredTitle || item.title
+        },
+        synonyms:cached?.synonyms || item.synonyms || [],
+        format:cached?.format || item.format || 'TV'
+      };
+    }
+
+    function loadManualGroups(){
+      try{
+        const raw=JSON.parse(localStorage.getItem('miruManualGroups')||'[]');
+        return Array.isArray(raw) ? raw.map(g=>Array.isArray(g)?g.map(String):[])
+          .filter(g=>g.length>=2) : [];
+      }catch(e){ return []; }
+    }
+
+    function saveManualGroups(groups){
+      const ids=new Set(vault.map(v=>String(v.id)));
+      const clean=[];
+      for(const g of groups){
+        const unique=[...new Set((g||[]).map(String).filter(id=>ids.has(id)))];
+        if(unique.length>=2) clean.push(unique);
+      }
+      localStorage.setItem('miruManualGroups',JSON.stringify(clean));
+    }
+
+    function manualGroupMap(){
+      const map=new Map();
+      loadManualGroups().forEach(g=>g.forEach(id=>map.set(String(id),g)));
+      return map;
+    }
+
+    async function ensureGroupingDates(vaultItems){
+      const missing = vaultItems.filter(item => {
+        const local = groupingDateValue(item);
+        return local === Number.MAX_SAFE_INTEGER;
+      });
+
+      await Promise.all(missing.map(async item => {
+        const id=Number(item?.id);
+        if(!Number.isFinite(id)) return;
+        try{
+          const data=await fetchMediaRelations(id);
+          if(data?.root){
+            titleInfoCache[id]=data.root;
+            if(data.root.startDate){
+              item.startDate=data.root.startDate;
+            }
+          }
+        }catch(err){
+          console.warn('Grouping date lookup failed for',id,err);
+        }
+      }));
+    }
+
+    async function buildTitleGroups() {
+      if (titleBuildPromise) return titleBuildPromise;
+
+      titleBuildPromise=(async()=>{
+        const ids=vault.map(v=>String(v.id));
+        const stored=loadManualGroups();
+        const validIds=new Set(ids);
+
+        // Keep only currently existing vault IDs and repair stale groups.
+        const groups=stored.map(g=>[...new Set(g.filter(id=>validIds.has(String(id))))])
+          .filter(g=>g.length>=2);
+        saveManualGroups(groups);
+
+        const assigned=new Set(groups.flat());
+        const allGroups=[
+          ...groups,
+          ...ids.filter(id=>!assigned.has(id)).map(id=>[id])
+        ];
+
+        titleGroups=[];
+        for(const memberIds of allGroups){
+          const vaultItems=memberIds.map(id=>vault.find(v=>String(v.id)===String(id))).filter(Boolean);
+          if(vaultItems.length>1) await ensureGroupingDates(vaultItems);
+          const media=vaultItems.map(v=>({
+            id:v.id,
+            title:{
+              english:v.englishTitle||v.title||'Untitled',
+              romaji:v.romajiTitle||v.title||'Untitled',
+              native:v.nativeTitle||'',
+              userPreferred:v.userPreferredTitle||v.englishTitle||v.romajiTitle||v.title||'Untitled'
+            },
+            synonyms:Array.isArray(v.synonyms)?v.synonyms:[],
+            type:'ANIME',
+            format:v.format,
+            episodes:v.episodes==='?'?null:Number(v.episodes),
+            duration:v.duration,
+            coverImage:{large:v.image,medium:v.image},
+            startDate:v.startDate||null,
+            endDate:v.endDate||null,
+            averageScore:null,
+            status:v.status||null,
+            countryOfOrigin:v.countryOfOrigin||''
+          }));
+
+          const chronological=vaultItems.slice().sort((a,b)=>{
+            const da=groupingDateValue(a), db=groupingDateValue(b);
+            return da!==db ? da-db : groupingSearchText(a).localeCompare(groupingSearchText(b));
+          });
+          const preferred=chronological[0]||vaultItems[0];
+          const preferredMedia=media.find(m=>String(m.id)===String(preferred?.id))||media[0];
+
+          titleGroups.push({
+            id:`group-${memberIds.map(String).sort().join('-')}`,
+            name:preferredMedia?mediaTitle(preferredMedia):'Untitled',
+            poster:preferred?.image||preferredMedia?.coverImage?.large||'',
+            vaultItems:chronological,media,
+            categoryCounts:{
+              SEASONS:media.filter(m=>categoryForFormat(m.format)==='SEASONS').length,
+              MOVIES:media.filter(m=>categoryForFormat(m.format)==='MOVIES').length,
+              SPECIALS:media.filter(m=>categoryForFormat(m.format)==='SPECIALS').length,
+              OVAS:media.filter(m=>categoryForFormat(m.format)==='OVAS').length
+            }
+          });
+        }
+
+        titleGroupsReady=true;
+        document.getElementById('statShows').innerText=titleGroups.length;
+        if(document.getElementById('titleDetails')?.classList.contains('open')) renderTitleBreakdown();
+      })().finally(()=>{titleBuildPromise=null;});
+      return titleBuildPromise;
+    }
+
+    function groupingDisplayName(group){
+      return group?.name || group?.vaultItems?.[0]?.title || 'Untitled';
+    }
+
+    function groupingSearchText(item){
+      return franchiseNormalize([
+        item?.title,item?.englishTitle,item?.romajiTitle,item?.nativeTitle,
+        item?.userPreferredTitle,...(item?.synonyms||[])
+      ].filter(Boolean).join(' '));
+    }
+
+    function groupingTokenScore(a,b){
+      const A=[...new Set(groupingSearchText(a).split(' ').filter(Boolean))];
+      const B=[...new Set(groupingSearchText(b).split(' ').filter(Boolean))];
+      if(!A.length||!B.length) return 0;
+      const common=A.filter(x=>B.includes(x));
+      const overlap=common.length/Math.max(A.length,B.length);
+      const phrase=groupingSearchText(a)===groupingSearchText(b)?1:0;
+      return phrase*100+overlap*100;
+    }
+
+    let groupingBaseId=null;
+    let groupingSelected=new Set();
+    let groupingSort='oldest';
+
+    function groupingBaseItem(group){
+      const members=[...(group?.vaultItems||[])];
+      if(!members.length) return null;
+      return members.slice().sort((a,b)=>{
+        const da=groupingDateValue(a), db=groupingDateValue(b);
+        if(da!==db) return da-db;
+        return groupingSearchText(a).localeCompare(groupingSearchText(b));
+      })[0];
+    }
+
+    function groupingDateValue(item){
+      const candidates = [
+        item?.startDate, item?.releaseDate, item?.airedFrom, item?.date,
+        titleInfoCache?.[item?.id]?.startDate,
+        relationCache?.[item?.id]?.root?.startDate
+      ];
+
+      for(const raw of candidates){
+        if(raw && typeof raw==='object'){
+          const y=Number(raw.year), m=Number(raw.month||1), d=Number(raw.day||1);
+          if(y) return new Date(y,m-1,d).getTime();
+        }
+        if(typeof raw==='string'){
+          const t=Date.parse(raw);
+          if(Number.isFinite(t)) return t;
+        }
+      }
+
+      const v=vault.find(x=>String(x.id)===String(item?.id));
+      const r=v?.startDate || v?.releaseDate || v?.airedFrom || v?.date;
+      if(r && typeof r==='object' && Number(r.year)){
+        return new Date(Number(r.year),Number(r.month||1)-1,Number(r.day||1)).getTime();
+      }
+      if(typeof r==='string'){
+        const t=Date.parse(r);
+        if(Number.isFinite(t)) return t;
+      }
+
+      // Last-resort ordinal fallback. This is deliberately only used when
+      // no real publication date exists, so "Season 1" sorts before "Season 2".
+      const text=groupingSearchText(item);
+      const m=text.match(/(?:season|s|part|cour|series)\s*([0-9]+)/i);
+      if(m) return 1000000000000 + Number(m[1]);
+      const n=text.match(/\b([1-9][0-9]?)\b/);
+      if(n) return 1000000000000 + Number(n[1]);
+
+      return Number.MAX_SAFE_INTEGER;
+    }
+
+    function setGroupingSort(mode){
+      groupingSort=mode==='newest'?'newest':'oldest';
+      document.querySelectorAll('.grouping-segment-btn').forEach(btn=>{
+        btn.classList.toggle('active',btn.dataset.sort===groupingSort);
+      });
+      if(groupingBaseId) refreshGroupingPicker();
+    }
+
+    function refreshGroupingPicker(){
+      const baseGroup=titleGroups.find(g=>g.vaultItems.some(v=>String(v.id)===groupingBaseId));
+      if(!baseGroup)return;
+      const baseItem=groupingBaseItem(baseGroup);
+      groupingBaseId=String(baseItem.id);
+      const baseMembers=new Set(baseGroup.vaultItems.map(v=>String(v.id)));
+
+      let candidates=titleGroups
+        .filter(g=>g.vaultItems.length===1)
+        .filter(g=>!baseMembers.has(String(g.vaultItems[0].id)))
+        .map(g=>g.vaultItems[0]);
+
+      candidates.sort((a,b)=>{
+        const da=groupingDateValue(a), db=groupingDateValue(b);
+        if(da!==db) return groupingSort==='oldest'?da-db:db-da;
+        return groupingSearchText(a).localeCompare(groupingSearchText(b));
+      });
+      renderGroupingPicker(candidates,baseItem);
+    }
+
+    async function openGroupingPanel(){
+      closeTimeDetails(); closeTitleDetails(); closeTitleInfo(); closeSeriesOverview(); toggleSettings(false);
+      const panel=document.getElementById('groupingPanel');
+      panel.classList.add('open'); panel.setAttribute('aria-hidden','false');
+      setModalScrollLock(true);
+      await buildTitleGroups();
+      renderGroupingList();
+    }
+
+    function closeGroupingPanel(){
+      const panel=document.getElementById('groupingPanel');
+      panel.classList.remove('open'); panel.setAttribute('aria-hidden','true');
+      if(!document.querySelector('.settings-panel.open')) setModalScrollLock(false);
+    }
+
+    function renderGroupingList(){
+      const box=document.getElementById('groupingList');
+      if(!box)return;
+      if(!titleGroups.length){
+        box.innerHTML='<div class="grouping-empty">Your vault is empty.</div>'; return;
+      }
+      box.innerHTML=titleGroups.map(group=>{
+        const members=[...(group.vaultItems||[])].sort((a,b)=>{
+          const da=groupingDateValue(a), db=groupingDateValue(b);
+          return da!==db ? da-db : groupingSearchText(a).localeCompare(groupingSearchText(b));
+        });
+        const base=members[0];
+        const extra=members.length-1;
+        return `<button class="grouping-card" onclick="openGroupingPicker('${String(base.id).replace(/'/g,"&#39;")}')">
+          <img src="${group.poster||''}" alt="">
+          <div class="grouping-card-main">
+            <div class="grouping-card-title">${escapeHtml(group.name)}</div>
+            <div class="grouping-card-meta">${members.length} vault title${members.length===1?'':'s'}${extra?` · ${extra} merged into this group`:''}</div>
+            ${extra?`<div class="grouping-members">${members.slice(1).map(v=>`<span class="grouping-member">${escapeHtml(v.englishTitle||v.romajiTitle||v.title||'Untitled')}</span>`).join('')}</div>`:''}
+          </div>
+          <span class="grouping-edit">Group ›</span>
+        </button>`;
+      }).join('');
+    }
+
+    async function openGroupingPicker(baseId){
+      groupingBaseId=String(baseId); groupingSelected=new Set();
+      const baseGroup=titleGroups.find(g=>g.vaultItems.some(v=>String(v.id)===groupingBaseId));
+      if(!baseGroup)return;
+
+      const baseItem=groupingBaseItem(baseGroup);
+      groupingBaseId=String(baseItem.id);
+      groupingSort='oldest';
+
+      const panel=document.getElementById('groupingPicker');
+      panel.classList.add('open'); panel.setAttribute('aria-hidden','false');
+      document.getElementById('groupingPickerTitle').textContent=`Group with ${baseItem.englishTitle||baseItem.romajiTitle||baseItem.title||'this title'}`;
+      document.getElementById('groupingPickerHint').textContent='Vault titles only. Choose the release order you want to review.';
+      document.querySelectorAll('.grouping-segment-btn').forEach(btn=>btn.classList.toggle('active',btn.dataset.sort==='oldest'));
+      refreshGroupingPicker();
+    }
+
+    function renderGroupingPicker(candidates,baseItem){
+      const box=document.getElementById('groupingPickerList');
+      if(!candidates.length){
+        box.innerHTML='<div class="grouping-empty">Everything else is already part of another manual group.</div>';
+      }else{
+        box.innerHTML=candidates.map(item=>{
+          const score=groupingTokenScore(baseItem,item);
+          const similar=score>=35;
+          return `<label class="grouping-option" data-id="${String(item.id).replace(/"/g,'&quot;')}">
+            <input type="checkbox" onchange="toggleGroupingSelection('${String(item.id).replace(/'/g,"&#39;")}',this.checked)">
+            <img src="${item.image||''}" alt="">
+            <div class="grouping-option-main">
+              <div class="grouping-option-title">${escapeHtml(item.englishTitle||item.romajiTitle||item.title||'Untitled')}</div>
+              <div class="grouping-option-meta">${escapeHtml(item.format||'Title')} · ${item.status||'In vault'}</div>
+              ${similar?'<div class="grouping-similar">✦ Similar vault title</div>':''}
+            </div>
+            <span class="grouping-pill">${score>=50?'Likely':score>=35?'Similar':'Vault'}</span>
+          </label>`;
+        }).join('');
+      }
+      updateGroupingMergeButton();
+    }
+
+    function toggleGroupingSelection(id,checked){
+      id=String(id);
+      if(checked)groupingSelected.add(id); else groupingSelected.delete(id);
+      document.querySelectorAll('#groupingPickerList .grouping-option').forEach(el=>{
+        el.classList.toggle('selected',groupingSelected.has(String(el.dataset.id)));
+      });
+      updateGroupingMergeButton();
+    }
+
+    function updateGroupingMergeButton(){
+      const n=groupingSelected.size;
+      const count=document.getElementById('groupingSelectionCount');
+      const btn=document.getElementById('groupingMergeButton');
+      if(count)count.textContent=`${n} selected`;
+      if(btn)btn.classList.toggle('ready',n>0);
+    }
+
+    async function mergeSelectedTitles(){
+      if(!groupingBaseId||!groupingSelected.size)return;
+      const groups=loadManualGroups();
+      const selected=[...groupingSelected];
+      let target=groups.find(g=>g.includes(groupingBaseId));
+
+      if(!target){
+        target=[groupingBaseId];
+        groups.push(target);
+      }
+
+      for(const id of selected){
+        // If an item was somehow in a previous group, remove it first.
+        for(const g of groups){
+          if(g!==target){
+            const idx=g.indexOf(id);
+            if(idx>=0)g.splice(idx,1);
+          }
+        }
+        if(!target.includes(id))target.push(id);
+      }
+
+      saveManualGroups(groups);
+      titleGroupsReady=false;
+      titleGroups=[];
+      groupingSelected=new Set();
+      await buildTitleGroups();
+      closeGroupingPicker();
+      renderGroupingList();
+      updateStats();
+    }
+
+    function closeGroupingPicker(){
+      const panel=document.getElementById('groupingPicker');
+      panel.classList.remove('open'); panel.setAttribute('aria-hidden','true');
+      groupingSelected=new Set();
+    }
+
+    function getGroupedMedia(group, category) {
+      const items = group.media
+        .filter(media => categoryForFormat(media.format) === category)
+        .sort((a,b) => dateValue(a)-dateValue(b));
+      return items;
+    }
+
+    function buildGroupCategoryEntries(category) {
+      return titleGroups
+        .map(group => ({ group, releases: getGroupedMedia(group, category) }))
+        .filter(entry => entry.releases.length)
+        .sort((a,b) => a.group.name.localeCompare(b.group.name));
+    }
+
+    function releaseStatus(media) {
+      const item = vaultItem(media.id);
+      if (!item) return null;
+      if (item.status === 'Watching') return { label: '▶ Watching', cls: 'watching' };
+      if (item.status === 'Planning') return { label: '📌 Planning', cls: 'planning' };
+      if (item.status === 'Completed') return { label: '✓ Completed', cls: 'completed' };
+      if (item.status === 'Dropped') return { label: '× Dropped', cls: 'dropped' };
+      return { label: '✓ Added', cls: 'added' };
+    }
+
+
+    function titleInfoFormatLabel(format) {
+      const f = String(format || '').toUpperCase();
+      return f === 'MOVIE' ? 'Movie' :
+             f === 'OVA' ? 'OVA' :
+             f === 'SPECIAL' ? 'Special' :
+             f === 'ONA' ? 'ONA' : 'TV';
+    }
+
+    function titleInfoStatus(item) {
+      if (!item) return {label:'', cls:''};
+      if (item.status === 'Watching') return {label:'▶ Watching', cls:'watching'};
+      if (item.status === 'Planning') return {label:'📌 Planning', cls:'planning'};
+      if (item.status === 'Completed') return {label:'✓ Completed', cls:'completed'};
+      if (item.status === 'Dropped') return {label:'× Dropped', cls:'dropped'};
+      return {label:'✓ Added', cls:'added'};
+    }
+
+    function titleInfoAliases(media, fallbackItem) {
+      const names = [
+        media?.title?.english,
+        media?.title?.romaji,
+        media?.title?.native,
+        ...(Array.isArray(media?.synonyms) ? media.synonyms : []),
+        fallbackItem?.englishTitle,
+        fallbackItem?.romajiTitle,
+        fallbackItem?.nativeTitle,
+        ...(Array.isArray(fallbackItem?.synonyms) ? fallbackItem.synonyms : [])
+      ].filter(Boolean);
+
+      return Array.from(new Set(names));
+    }
+
+    async function openTitleInfo(groupId) {
+      if (!titleGroupsReady) await buildTitleGroups();
+      activeTitleInfoGroupId = groupId;
+      const group = titleGroups.find(g => g.id === groupId);
+      if (!group) return;
+
+      const panel = document.getElementById('titleInfoDetails');
+      panel.style.zIndex = '320';
+      panel.classList.add('open');
+      panel.setAttribute('aria-hidden','false');
+      setModalScrollLock(true);
+
+      document.getElementById('titleInfoHeading').textContent = group.name;
+      document.getElementById('titleInfoSubtitle').textContent =
+        `${group.vaultItems.length} release${group.vaultItems.length === 1 ? '' : 's'} in your vault`;
+      document.getElementById('titleInfoBody').innerHTML =
+        '<div class="title-info-loading">Loading detailed title information…</div>';
+
+      try {
+        const ids = group.vaultItems.map(v => Number(v.id)).filter(Number.isFinite);
+
+        await Promise.all(ids.map(async id => {
+          try {
+            const data = await fetchMediaRelations(id);
+            if (data?.root) titleInfoCache[id] = data.root;
+          } catch (err) {
+            console.warn('Title detail metadata failed for', id, err);
+          }
+        }));
+
+        renderTitleInfo(group);
+      } catch (err) {
+        console.warn('Title details failed', err);
+        renderTitleInfo(group);
+      }
+    }
+
+    function closeTitleInfo() {
+      const panel = document.getElementById('titleInfoDetails');
+      panel.classList.remove('open');
+      panel.setAttribute('aria-hidden','true');
+      activeTitleInfoGroupId = null;
+      if (!document.querySelector('.settings-panel.open')) setModalScrollLock(false);
+    }
+
+    function renderTitleInfo(group) {
+      const body = document.getElementById('titleInfoBody');
+      if (!body) return;
+
+      const releases = group.vaultItems.map(item => {
+        const media = titleInfoCache[item.id] || {
+          id:item.id,
+          title:{
+            english:item.englishTitle || item.title,
+            romaji:item.romajiTitle || item.title,
+            native:item.nativeTitle || ''
+          },
+          format:item.format === 'Anime' ? 'TV' : item.format,
+          episodes:item.episodes === '?' ? null : Number(item.episodes),
+          duration:item.duration,
+          coverImage:{large:item.image,medium:item.image},
+          startDate:null,
+          endDate:null,
+          averageScore:null,
+          synonyms:item.synonyms || []
+        };
+
+        return {item, media};
+      });
+
+      const baseItem=groupingBaseItem(group);
+      const first = releases.find(x=>String(x.item.id)===String(baseItem?.id)) || releases[0];
+      const leadMedia = first?.media || {};
+      const leadItem = first?.item || {};
+      const aliases = titleInfoAliases(leadMedia, leadItem)
+        .filter(name => name !== group.name)
+        .slice(0, 6);
+
+      const categories = {
+        SEASONS: releases.filter(x => categoryForFormat(x.media.format) === 'SEASONS'),
+        MOVIES: releases.filter(x => categoryForFormat(x.media.format) === 'MOVIES'),
+        SPECIALS: releases.filter(x => categoryForFormat(x.media.format) === 'SPECIALS'),
+        OVAS: releases.filter(x => categoryForFormat(x.media.format) === 'OVAS')
+      };
+
+      const totalEpisodes = releases.reduce((sum,x) => {
+        const n = Number(x.item.episodes);
+        return sum + (Number.isFinite(n) ? n : 0);
+      }, 0);
+
+      const watchedEpisodes = releases.reduce((sum,x) => sum + (Number(x.item.progress) || 0), 0);
+      const image = leadMedia.coverImage?.large || leadMedia.coverImage?.medium || leadItem.image || '';
+
+      const releaseDates = releases
+        .map(x => x.media.startDate)
+        .filter(d => d?.year)
+        .sort((a,b) => dateValue({startDate:a}) - dateValue({startDate:b}));
+
+      const endDates = releases
+        .map(x => x.media.endDate)
+        .filter(d => d?.year);
+
+      const avgScoreValues = releases
+        .map(x => Number(x.media.averageScore))
+        .filter(Number.isFinite);
+
+      const avgScore = avgScoreValues.length
+        ? (avgScoreValues.reduce((a,b) => a+b,0) / avgScoreValues.length / 10).toFixed(1)
+        : '—';
+
+      body.innerHTML = `
+        <div class="title-info-hero">
+          <img src="${image}" alt="">
+          <div class="title-info-main">
+            <div class="title-info-name">${escapeHtml(group.name)}</div>
+            ${aliases.length
+              ? `<div class="title-info-aliases">Also known as: ${escapeHtml(aliases.join(' • '))}</div>`
+              : ''}
+            <div class="title-info-meta">
+              ${categories.SEASONS.length ? `<span class="title-info-pill">${categories.SEASONS.length} season${categories.SEASONS.length===1?'':'s'}</span>` : ''}
+              ${categories.MOVIES.length ? `<span class="title-info-pill">${categories.MOVIES.length} movie${categories.MOVIES.length===1?'':'s'}</span>` : ''}
+              ${categories.OVAS.length ? `<span class="title-info-pill">${categories.OVAS.length} OVA${categories.OVAS.length===1?'':'s'}</span>` : ''}
+              ${categories.SPECIALS.length ? `<span class="title-info-pill">${categories.SPECIALS.length} special${categories.SPECIALS.length===1?'':'s'}</span>` : ''}
+            </div>
+          </div>
+        </div>
+
+        <div class="title-info-grid">
+          <div class="title-info-stat"><span>This title</span><b>1 franchise</b></div>
+          <div class="title-info-stat"><span>Vault releases</span><b>${releases.length}</b></div>
+          <div class="title-info-stat"><span>Episodes</span><b>${totalEpisodes || '—'}</b></div>
+          <div class="title-info-stat"><span>Watched</span><b>${watchedEpisodes}${totalEpisodes ? ` / ${totalEpisodes}` : ''}</b></div>
+          <div class="title-info-stat"><span>Avg score</span><b>★ ${avgScore}</b></div>
+          <div class="title-info-stat"><span>First release</span><b>${releaseDates.length ? formatAniDate(releaseDates[0]) : '—'}</b></div>
+          <div class="title-info-stat"><span>Last known end</span><b>${endDates.length ? formatAniDate(endDates.sort((a,b)=>dateValue({startDate:b})-dateValue({startDate:a}))[0]) : '—'}</b></div>
+        </div>
+
+        <div class="title-info-section">
+          <h4>Your releases</h4>
+          <div class="title-release-list">
+            ${releases.map(({item,media}) => {
+              const status = titleInfoStatus(item);
+              const total = item.episodes === '?' ? '?' : Number(item.episodes);
+              const progress = Number(item.progress) || 0;
+              const format = titleInfoFormatLabel(media.format || item.format);
+              const date = media.startDate?.year ? formatAniDate(media.startDate) : 'Date unknown';
+              return `
+                <div class="title-release-detail">
+                  <img src="${media.coverImage?.medium || media.coverImage?.large || item.image || ''}" alt="">
+                  <div>
+                    <div class="title-release-name">${escapeHtml(mediaTitle(media) || item.title)}</div>
+                    <div class="title-release-meta">
+                      ${format} • ${total === '?' ? '? eps' : `${total} eps`}
+                      ${date ? ` • ${date}` : ''}
+                    </div>
+                  </div>
+                  <div class="title-release-status">
+                    <span class="release-status ${status.cls}">${status.label}</span>
+                    <div class="title-release-meta">${progress}/${total}</div>
+                  </div>
+                </div>`;
+            }).join('')}
+          </div>
+        </div>
+
+        <div class="title-info-section">
+          <h4>Vault scope</h4>
+          <div class="title-info-note">
+            This view only includes releases already present in your vault.
+            Unadded AniList releases and future announcements are intentionally excluded.
+          </div>
+        </div>
+      `;
+    }
+
+    function renderTitleBreakdown() {
+      const box = document.getElementById('titleBreakdown');
+      const strip = document.getElementById('titleCountStrip');
+      const entries = buildGroupCategoryEntries(titleCategory);
+      const categoryNames = { SEASONS: 'season', MOVIES: 'movie', SPECIALS: 'special', OVAS: 'OVA' };
+      const singular = categoryNames[titleCategory];
+      const plural = `${singular}${singular === 'movie' || singular === 'special' || singular === 'season' ? 's' : 's'}`;
+
+      strip.innerText = `${entries.length} title${entries.length === 1 ? '' : 's'} here • ${entries.reduce((n,e) => n + e.releases.length, 0)} ${plural} in your vault`;
+
+      if (!entries.length) {
+        box.innerHTML = `<div class="title-empty">You haven't added any ${plural.toLowerCase()} yet.</div>`;
+        return;
+      }
+
+      box.innerHTML = entries.map((entry, idx) => {
+        const g = entry.group;
+        const releases = entry.releases;
+        const names = releases.map((m, i) => {
+          const r = releaseStatus(m);
+          if (!r) return '';
+          return `<div class="release-row">
+            <img class="release-poster" src="${m.coverImage?.medium || m.coverImage?.large || g.poster}" alt="">
+            <div>
+              <div class="release-name">${mediaTitle(m)}</div>
+              <div class="release-type">${m.format || singular}${m.episodes ? ` • ${m.episodes} eps` : ''}</div>
+            </div>
+            <span class="release-status ${r.cls}">${r.label}</span>
+          </div>`;
+        }).join('');
+
+        const countedVault = g.vaultItems.filter(v => getGroupedMedia(g, titleCategory).some(m => m.id === v.id)).length;
+
+        return `<article class="franchise-card" data-group-index="${idx}">
+          <div class="franchise-head">
+            <button class="franchise-hit" onclick="openTitleInfo('${g.id}')" aria-label="Open detailed information for ${escapeHtml(g.name)}">
+              <img class="franchise-poster" src="${g.poster}" alt="">
+              <span class="franchise-main">
+                <span class="franchise-name">${g.name}</span>
+                <span class="franchise-meta">${countedVault} in vault • ${releases.length} ${singular}${releases.length === 1 ? '' : 's'}</span>
+              </span>
+            </button>
+            <button class="franchise-expand" onclick="toggleTitleGroup(this.closest('.franchise-card'))" aria-label="Show releases">⌄</button>
+          </div>
+          <div class="franchise-releases">${names}</div>
+        </article>`;
+      }).join('');
+    }
+
+    function toggleTitleGroup(card) {
+      card.classList.toggle('open');
+    }
+
+    function setTitleCategory(category) {
+      titleCategory = category;
+      document.querySelectorAll('.title-tab').forEach(tab => {
+        tab.classList.toggle('active', tab.dataset.category === category);
+      });
+      renderTitleBreakdown();
+    }
+
+    async function openTitleDetails() {
+      closeTitleInfo();
+      const panel = document.getElementById('titleDetails');
+      panel.classList.add('open');
+      panel.setAttribute('aria-hidden', 'false');
+      setModalScrollLock(true);
+      setTitleCategory('SEASONS');
+      document.getElementById('titleSummary').textContent = 'Reading titles already in your vault…';
+      await buildTitleGroups();
+      document.getElementById('titleSummary').textContent =
+        `${titleGroups.length} unique anime group${titleGroups.length === 1 ? '' : 's'} in your vault`;
+      renderTitleBreakdown();
+    }
+
+    function closeTitleDetails() {
+      const panel = document.getElementById('titleDetails');
+      panel.classList.remove('open');
+      panel.setAttribute('aria-hidden', 'true');
+      if (!document.querySelector('.settings-panel.open')) setModalScrollLock(false);
+    }
+
+
+    function seriesStatus(item) {
+      if (!item) return null;
+      if (item.status === 'Watching') return { label: '▶ Watching', cls: 'watching' };
+      if (item.status === 'Planning') return { label: '📌 Planning', cls: 'planning' };
+      if (item.status === 'Completed') return { label: '✓ Completed', cls: 'completed' };
+      if (item.status === 'Dropped') return { label: '× Dropped', cls: 'dropped' };
+      return { label: '✓ Added', cls: 'added' };
+    }
+
+    async function openSeriesOverview(id) {
+      seriesOverviewId = id;
+      relatedGraph = null;
+
+      const rootItem = vaultItem(id);
+      const panel = document.getElementById('seriesOverview');
+      panel.classList.add('open');
+      panel.setAttribute('aria-hidden','false');
+      setModalScrollLock(true);
+
+      document.getElementById('seriesOverviewTitle').textContent =
+        rootItem?.title || 'Franchise';
+      document.getElementById('seriesOverviewSubtitle').textContent =
+        'Resolving related releases…';
+      document.getElementById('relatedSummary').textContent =
+        'MIRU is comparing official relations, names and release context.';
+      document.getElementById('seriesOverviewList').innerHTML =
+        '<div class="series-empty">Building franchise map…</div>';
+
+      try {
+        relatedGraph = await fetchRelatedUniverse(id, 3, true);
+        relatedGraph = relatedGraph
+          .filter(media => Number(media.id) !== Number(id) && isReleasedMedia(media));
+
+        const source = relatedGraph.find(m => Number(m.id) === Number(id)) || {
+          id: id,
+          title: { english: rootItem?.englishTitle || rootItem?.title, romaji: rootItem?.romajiTitle || rootItem?.title, native: rootItem?.nativeTitle || rootItem?.title },
+          synonyms: rootItem?.synonyms || [],
+          format: rootItem?.format || 'TV'
+        };
+
+        const overview = buildFranchiseOverview(source, relatedGraph);
+
+        // Confirmed/probable candidates are surfaced first. Possible candidates
+        // remain visible for inspection but are not treated as verified.
+        const ordered = [
+          ...overview.confirmed.map(x=>x.candidate),
+          ...overview.probable.map(x=>x.candidate),
+          ...overview.possible.map(x=>x.candidate)
+        ];
+
+        const resolverPanel = document.getElementById('seriesOverviewList');
+
+        resolverPanel.innerHTML = `
+          <div class="franchise-resolver-summary">
+            <b>${overview.confirmed.length}</b> confirmed •
+            <b>${overview.probable.length}</b> probable •
+            <b>${overview.possible.length}</b> possible.
+            Possible matches are review-only and are never automatically added.
+          </div>
+          <div id="franchiseResolverResults"></div>`;
+
+        renderFranchiseResolver(
+          document.getElementById('franchiseResolverResults'),
+          overview
+        );
+
+        document.getElementById('seriesOverviewSubtitle').textContent =
+          `${ordered.length} candidate release${ordered.length === 1 ? '' : 's'} resolved`;
+
+      } catch (error) {
+        console.error(error);
+        document.getElementById('seriesOverviewSubtitle').textContent =
+          'Could not resolve related releases.';
+        document.getElementById('seriesOverviewList').innerHTML =
+          '<div class="series-empty">Could not build the franchise map.</div>';
+      }
+    }
+
+    function closeSeriesOverview() {
+      window.clearTimeout(window.miruRelatedTickTimer);
+      relatedAddAnimatingId = null;
+      const panel = document.getElementById('seriesOverview');
+      panel.classList.remove('open');
+      panel.setAttribute('aria-hidden', 'true');
+      seriesOverviewId = null;
+      if (!document.querySelector('.settings-panel.open')) setModalScrollLock(false);
+      relatedGraph = null;
+      relatedAddAnimatingId = null;
+    }
+
+
+    async function openRelatedTitleInfo(mediaId){
+      const group = titleGroups.find(g => g.media.some(m => Number(m.id)===Number(mediaId)));
+      if(group){
+        await openTitleInfo(group.id);
+        return;
+      }
+      // Fallback: if the resolver found a release that is not yet represented
+      // in the vault, do not inject it into the vault-only detailed breakdown.
+      return;
+    }
+
+    function renderSeriesOverview() {
+      const list = document.getElementById('seriesOverviewList');
+      if (!list || !seriesOverviewId) return;
+
+      const releases = Array.isArray(relatedGraph) ? relatedGraph : [];
+
+      if (!releases.length) {
+        list.innerHTML =
+          '<div class="series-empty">No related published anime releases were found for this title.</div>';
+        return;
+      }
+
+      list.innerHTML = releases.map(media => {
+        const inVault = vaultItem(media.id);
+        const status = seriesStatus(inVault);
+        let action = '';
+
+        if (relatedAddAnimatingId === media.id) {
+          action = `<div class="related-added-check" aria-label="Added"><span>✓</span></div>`;
+        } else if (inVault) {
+          if (inVault.status === 'Planning') {
+            action = `<div class="related-status-choices">
+              <button onclick="setRelatedStatus(${media.id}, 'Watching')">Watching</button>
+              <button onclick="setRelatedStatus(${media.id}, 'Watched')">Watched</button>
+              <button onclick="setRelatedStatus(${media.id}, 'Dropped')">Dropped</button>
+              <button onclick="setRelatedStatus(${media.id}, 'Completed')">Completed</button>
+            </div>`;
+          } else {
+            action = `<span class="series-badge ${status.cls}">${status.label}</span>`;
+          }
+        } else {
+          action = `<button class="add-btn" onclick="addRelatedToVault(${media.id})">＋ Add</button>`;
+        }
+
+        const kind = categoryForFormat(media.format);
+        const kindLabel = {
+          SEASONS: 'Season',
+          MOVIES: 'Movie',
+          OVAS: 'OVA',
+          SPECIALS: 'Special'
+        }[kind] || 'Anime';
+
+        const relation = media.relationType === 'CURRENT'
+          ? ''
+          : (media.relationType || '').replaceAll('_', ' ').toLowerCase();
+
+        return `<div class="series-release">
+          <img src="${media.coverImage?.medium || media.coverImage?.large || ''}" alt="">
+          <div>
+            <button class="series-release-name series-release-title-button"
+              onclick="openRelatedTitleInfo(${media.id})"
+              aria-label="Open detailed information for ${escapeHtml(mediaTitle(media))}">
+              <span>${mediaTitle(media)}</span>
+              <span class="release-kind">${kindLabel}</span>
+            </button>
+            <div class="series-release-meta">
+              ${relation ? `${relation} • ` : ''}${media.episodes ? `${media.episodes} eps` : `${kindLabel}`}
+            </div>
+          </div>
+          <div class="series-release-action">${action}</div>
+        </div>`;
+      }).join('');
+    }
+
+    async function refreshSeriesOverview() {
+      if (!seriesOverviewId) return;
+      try {
+        relatedGraph = await fetchRelatedUniverse(seriesOverviewId, 3, true);
+        relatedGraph = relatedGraph.filter(media => media.id !== seriesOverviewId);
+        relatedGraph.sort((a, b) => {
+          const byDate = dateValue(a) - dateValue(b);
+          if (byDate !== 0) return byDate;
+          const order = {SEASONS:0, MOVIES:1, OVAS:2, SPECIALS:3};
+          return (order[categoryForFormat(a.format)] ?? 9) -
+                 (order[categoryForFormat(b.format)] ?? 9);
+        });
+        document.getElementById('seriesOverviewSubtitle').textContent =
+          `${relatedGraph.length} published related release${relatedGraph.length === 1 ? '' : 's'}`;
+        renderSeriesOverview();
+      } catch (e) {
+        console.warn('Could not refresh related releases', e);
+      }
+    }
+
+
+    function addRelatedToVault(id) {
+      if (vaultItem(id)) {
+        renderSeriesOverview();
+        return;
+      }
+
+      // The displayed panel is built from the recursive relation graph.
+      // Use that exact source instead of looking only at the root's direct edges.
+      const media = (Array.isArray(relatedGraph) ? relatedGraph : [])
+        .find(m => Number(m.id) === Number(id));
+
+      if (!media) {
+        console.warn('Related title metadata not found in current graph:', id);
+        return;
+      }
+
+      const format = String(media.format || 'TV').toUpperCase();
+      const normalizedFormat =
+        format === 'MOVIE' ? 'MOVIE' :
+        format === 'SPECIAL' ? 'SPECIAL' :
+        format === 'OVA' ? 'OVA' : 'TV';
+
+      vault.push({
+        id: media.id,
+        title: mediaTitle(media),
+        englishTitle: media.title?.english || '',
+        romajiTitle: media.title?.romaji || '',
+        nativeTitle: media.title?.native || '',
+        userPreferredTitle: media.title?.userPreferred || '',
+        synonyms: Array.isArray(media.synonyms) ? media.synonyms.slice(0, 12) : [],
+        image: media.coverImage?.large || media.coverImage?.medium || '',
+        episodes: media.episodes ?? '?',
+        duration: media.duration || 24,
+        format: normalizedFormat,
+        progress: 0,
+        status: 'Planning'
+      });
+
+      save();
+      render();
+
+      // One short modern confirmation animation.
+      relatedAddAnimatingId = media.id;
+      renderSeriesOverview();
+
+      window.clearTimeout(window.miruRelatedTickTimer);
+      window.miruRelatedTickTimer = window.setTimeout(() => {
+        relatedAddAnimatingId = null;
+        renderSeriesOverview();
+      }, 650);
+
+      // The graph itself does not need to be rebuilt just because a local
+      // vault status changed. Keep the currently displayed releases intact.
+      titleGroupsReady = false;
+      buildTitleGroups();
+    }
+
+    function setRelatedStatus(id, chosenStatus) {
+      const item = vaultItem(id);
+      if (!item) return;
+
+      const status = chosenStatus === 'Watched' ? 'Completed' : chosenStatus;
+      item.status = status;
+
+      if (status === 'Completed' && item.episodes !== '?') {
+        item.progress = Number(item.episodes);
+      }
+
+      save();
+      render();
+      renderSeriesOverview();
+
+      // Statistics/title breakdown can refresh independently. The Related
+      // panel keeps using its existing graph, so other Add buttons remain live.
+      titleGroupsReady = false;
+      buildTitleGroups();
+    }
+
+
+    function escapeHtml(value) {
+      return String(value ?? '').replace(/[&<>"']/g, ch => ({
+        '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'
+      }[ch]));
+    }
+
+    function formatAniDate(date) {
+      if (!date || !date.year) return 'Unknown';
+      const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+      if (date.month && date.day) {
+        return `${String(date.day).padStart(2,'0')}${months[date.month - 1] || ''}${date.year}`;
+      }
+      if (date.month) return `${months[date.month - 1] || ''}${date.year}`;
+      return String(date.year);
+    }
+
+    function activeSearchInput() {
+      return currentTab === 'search'
+        ? document.getElementById('discoverSearchInput')
+        : document.getElementById('vaultSearchInput');
+    }
+
+    function updateSearchChrome() {
+      const vaultBox = document.querySelector('.vault-search-box');
+      const discoverBox = document.querySelector('.discover-search-box');
+      const filterBar = document.getElementById('vaultFilterBar');
+
+      if (!vaultBox || !discoverBox || !filterBar) return;
+
+      const isDiscover = currentTab === 'search';
+      vaultBox.classList.toggle('active', !isDiscover);
+      document.getElementById('sortFilterLabel').textContent =
+        ({newest:'Newest added',oldest:'Oldest added','a-z':'A–Z','z-a':'Z–A'})[vaultSort] || 'Newest added';
+      document.getElementById('typeFilterLabel').textContent =
+        ({all:'All types',anime:'Anime',donghua:'Donghua',movie:'Movies',ova:'OVAs',special:'Specials'})[vaultType] || 'All types';
+      if (isDiscover) closeVaultFilterMenu();
+      discoverBox.classList.toggle('active', isDiscover);
+      filterBar.classList.toggle('active', !isDiscover);
+
+      const vaultInput = document.getElementById('vaultSearchInput');
+      const discoverInput = document.getElementById('discoverSearchInput');
+
+      document.getElementById('vaultSearchClear')
+        ?.classList.toggle('visible', !!vaultInput?.value.trim());
+      document.getElementById('discoverSearchClear')
+        ?.classList.toggle('visible', !!discoverInput?.value.trim());
+    }
+
+    function normalizeSearchText(value) {
+      return String(value || '').toLocaleLowerCase().normalize('NFKC').replace(/[‐‑‒–—]/g,'-').trim();
+    }
+
+    function searchableVaultNames(item) {
+      return [
+        item.title, item.englishTitle, item.romajiTitle,
+        item.nativeTitle, item.userPreferredTitle,
+        ...(Array.isArray(item.synonyms) ? item.synonyms : [])
+      ].filter(Boolean);
+    }
+
+    let vaultAliasRequest = null;
+
+    function localVaultSearch(query) {
+      return query
+        ? vault.filter(item =>
+            searchableVaultNames(item).some(name => {
+              const normalized = normalizeSearchText(name);
+              return normalized === query ||
+                     normalized.startsWith(query) ||
+                     normalized.includes(query);
+            })
+          )
+        : [];
+    }
+
+    async function enrichVaultAliasesForSearch() {
+      const ids = vault.map(item => Number(item.id)).filter(Number.isFinite);
+      if (!ids.length) return;
+
+      if (vaultAliasRequest) return vaultAliasRequest;
+
+      const query = `
+        query ($ids: [Int]) {
+          Page(perPage: 50) {
+            media(id_in: $ids, type: ANIME) {
+              id
+              title { romaji english native userPreferred }
+            }
+          }
+        }
+      `;
+
+      vaultAliasRequest = fetch('https://graphql.anilist.co', {
+        method: 'POST',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({query, variables:{ids}})
+      })
+      .then(r => r.json())
+      .then(payload => {
+        const media = payload?.data?.Page?.media || [];
+        let changed = false;
+
+        media.forEach(m => {
+          const item = vault.find(v => Number(v.id) === Number(m.id));
+          if (!item) return;
+
+          const before = JSON.stringify([
+            item.englishTitle,item.romajiTitle,item.nativeTitle,item.userPreferredTitle
+          ]);
+
+          item.englishTitle = item.englishTitle || m.title?.english || '';
+          item.romajiTitle = item.romajiTitle || m.title?.romaji || '';
+          item.nativeTitle = item.nativeTitle || m.title?.native || '';
+          item.userPreferredTitle = item.userPreferredTitle || m.title?.userPreferred || '';
+
+          changed = changed || before !== JSON.stringify([
+            item.englishTitle,item.romajiTitle,item.nativeTitle,item.userPreferredTitle
+          ]);
+        });
+
+        if (changed) localStorage.setItem('otakuVaultData', JSON.stringify(vault));
+      })
+      .catch(err => console.warn('Vault title metadata lookup failed:', err))
+      .finally(() => { vaultAliasRequest = null; });
+
+      return vaultAliasRequest;
+    }
+
+    async function handleVaultSearchInput() {
+      const input = document.getElementById('vaultSearchInput');
+      const query = normalizeSearchText(input.value);
+
+      vaultSearchResults = localVaultSearch(query);
+      updateSearchChrome();
+      render();
+
+      // Older MIRU entries may have been saved before alias metadata existed.
+      // Enrich them once, then rerun the exact same local vault search.
+      if (query && !vaultSearchResults.length && vault.length) {
+        await enrichVaultAliasesForSearch();
+
+        // Ignore a stale request if the user changed/cleared the search meanwhile.
+        if (normalizeSearchText(input.value) !== query) return;
+
+        vaultSearchResults = localVaultSearch(query);
+        updateSearchChrome();
+        render();
+      }
+    }
+
+    function handleDiscoverSearchInput() {
+      const input = document.getElementById('discoverSearchInput');
+      const query = input.value.trim();
+
+      updateSearchChrome();
+      clearTimeout(searchTimer);
+
+      if (!query) {
+        results = [];
+        render();
+        return;
+      }
+
+      searchTimer = setTimeout(() => searchMedia(query), 300);
+    }
+
+    function clearVaultSearch() {
+      const input = document.getElementById('vaultSearchInput');
+      input.value = '';
+      vaultSearchResults = [];
+      updateSearchChrome();
+      render();
+      input.focus();
+    }
+
+    function clearDiscoverSearch() {
+      clearTimeout(searchTimer);
+      const input = document.getElementById('discoverSearchInput');
+      input.value = '';
+      results = [];
+      updateSearchChrome();
+      render();
+      input.focus();
+    }
+
+    function searchFromVaultOrDiscover() {
+      const query = document.getElementById('vaultSearchInput').value.trim();
+
+      // Discover is a separate search context. Clear the vault search
+      // immediately so it cannot follow the user into another section.
+      const vaultInput = document.getElementById('vaultSearchInput');
+      if (vaultInput) vaultInput.value = '';
+      vaultSearchResults = [];
+
+      setTab('search');
+
+      const discoverInput = document.getElementById('discoverSearchInput');
+      discoverInput.value = query;
+      updateSearchChrome();
+
+      if (query) searchMedia(query);
+      discoverInput.focus();
+    }
+
+    function setVaultSort(value) {
+      vaultSort = value;
+      closeVaultFilterMenu();
+      updateSearchChrome();
+      document.getElementById('sortFilterChip')?.classList.remove('value-updated');
+      void document.getElementById('sortFilterChip')?.offsetWidth;
+      document.getElementById('sortFilterChip')?.classList.add('value-updated');
+      render();
+    }
+
+    function setVaultTypeFilter(value) {
+      vaultType = value;
+      closeVaultFilterMenu();
+      updateSearchChrome();
+      document.getElementById('typeFilterChip')?.classList.remove('value-updated');
+      void document.getElementById('typeFilterChip')?.offsetWidth;
+      document.getElementById('typeFilterChip')?.classList.add('value-updated');
+      render();
+    }
+
+    function toggleVaultFilterMenu(kind) {
+      const bar = document.getElementById('vaultFilterBar');
+      const menu = document.getElementById('vaultFilterMenu');
+      if (!bar || !menu) return;
+      const isOpen = menu.classList.contains('open');
+      if (isOpen && menu.dataset.kind === kind) {
+        closeVaultFilterMenu();
+        return;
+      }
+
+      menu.dataset.kind = kind;
+      const sortOptions = [
+        ['newest','Newest added'],['oldest','Oldest added'],['a-z','A–Z'],['z-a','Z–A']
+      ];
+      const typeOptions = [
+        ['all','All types'],['anime','Anime'],['donghua','Donghua'],
+        ['movie','Movies'],['ova','OVAs'],['special','Specials']
+      ];
+      const options = kind === 'sort' ? sortOptions : typeOptions;
+      const current = kind === 'sort' ? vaultSort : vaultType;
+
+      menu.innerHTML = `<div class="filter-menu-title">${kind === 'sort' ? 'Sort by' : 'Filter by type'}</div>` +
+        options.map(([value,label]) =>
+          `<button class="${value === current ? 'selected' : ''}" onclick="${kind === 'sort' ? `setVaultSort('${value}')` : `setVaultTypeFilter('${value}')`}">${label}</button>`
+        ).join('');
+
+      menu.classList.add('open');
+      menu.setAttribute('aria-hidden','false');
+      document.getElementById('sortFilterChip')?.setAttribute('aria-expanded', String(kind === 'sort'));
+      document.getElementById('typeFilterChip')?.setAttribute('aria-expanded', String(kind === 'type'));
+    }
+
+    function closeVaultFilterMenu() {
+      const menu = document.getElementById('vaultFilterMenu');
+      if (menu) {
+        menu.classList.remove('open');
+        menu.setAttribute('aria-hidden','true');
+      }
+      document.getElementById('sortFilterChip')?.setAttribute('aria-expanded','false');
+      document.getElementById('typeFilterChip')?.setAttribute('aria-expanded','false');
+    }
+
+    function pressFilterTarget(target) {
+      if (!target || !target.closest) return;
+      const chip = target.closest('.filter-chip');
+      const option = target.closest('.vault-filter-menu button');
+      const el = chip || option;
+      if (!el) return;
+
+      el.classList.add('is-pressed');
+      window.clearTimeout(el._miruPressTimer);
+      el._miruPressTimer = window.setTimeout(() => el.classList.remove('is-pressed'), 180);
+    }
+
+    document.addEventListener('pointerdown', event => pressFilterTarget(event.target), {passive:true});
+    document.addEventListener('touchstart', event => pressFilterTarget(event.target), {passive:true});
+
+    document.addEventListener('click', (event) => {
+      const bar = document.getElementById('vaultFilterBar');
+      if (bar && !bar.contains(event.target)) closeVaultFilterMenu();
+    });
+
+
+    async function searchMedia(forcedQuery = null) {
+      const query = (forcedQuery ?? document.getElementById('discoverSearchInput').value).trim();
+      if (!query) return;
+
+      if (currentTab !== 'search') setTab('search');
+      const container = document.getElementById('displayArea');
+      container.innerHTML = '<div class="empty-state">Searching database...</div>';
+
+      const gqlQuery = `
+        query ($search: String) {
+          Page(perPage: 12) {
+            media(search: $search, type: ANIME) {
+              id
+              title { romaji english native userPreferred }
+              synonyms
+              coverImage { medium large }
+              episodes
+              duration
+              format
+              countryOfOrigin
+              averageScore
+              startDate { year month day }
+              endDate { year month day }
+              status
+            }
+          }
+        }
+      `;
+
+      try {
+        const response = await fetch('https://graphql.anilist.co', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify({ query: gqlQuery, variables: { search: query } })
+        });
+        const data = await response.json();
+        results = data.data.Page.media || [];
+        render();
+      } catch (err) {
+        container.innerHTML = '<div class="empty-state" style="color:var(--danger);">Search failed. Check your connection.</div>';
+      }
+    }
+
+    function addOrUpdate(id, status) {
+      const show = results.find(s => s.id === id);
+      const existing = vault.find(s => s.id === id);
+
+      if (existing) {
+        existing.status = status;
+        if (show) {
+          existing.englishTitle = existing.englishTitle || show.title?.english || '';
+          existing.romajiTitle = existing.romajiTitle || show.title?.romaji || '';
+          existing.nativeTitle = existing.nativeTitle || show.title?.native || '';
+          existing.userPreferredTitle = existing.userPreferredTitle || show.title?.userPreferred || '';
+          existing.synonyms = Array.from(new Set([
+            ...(existing.synonyms || []), ...(show.synonyms || [])
+          ])).slice(0, 12);
+        }
+        if (status === 'Completed' && existing.episodes !== '?') {
+          existing.progress = Number(existing.episodes);
+        }
+      } else if (show) {
+        vault.push({
+          id: show.id,
+          title: show.title.english || show.title.romaji || show.title.native || show.title.userPreferred,
+          englishTitle: show.title.english || '',
+          romajiTitle: show.title.romaji || '',
+          nativeTitle: show.title.native || '',
+          userPreferredTitle: show.title.userPreferred || '',
+          synonyms: Array.isArray(show.synonyms) ? show.synonyms.slice(0, 12) : [],
+          image: show.coverImage.large || show.coverImage.medium,
+          episodes: show.episodes || '?',
+          duration: show.duration || 24,
+          format: show.countryOfOrigin === 'CN' ? 'Donghua' : (show.format || 'Anime'),
+          progress: (status === 'Completed' && show.episodes) ? Number(show.episodes) : 0,
+          status: status
+        });
+      }
+      save();
+      render();
+      titleGroupsReady = false;
+      buildTitleGroups();
+    }
+
+
+    function progressMoveDescription(item, targetStatus, targetProgress) {
+      const title = item?.title || 'This title';
+      const sectionName = {
+        Watching: 'Watching',
+        Planning: 'Planning',
+        Completed: 'Completed',
+        Dropped: 'Dropped'
+      }[targetStatus] || targetStatus;
+
+      return {
+        title: `Move ${title} to ${sectionName}?`,
+        text: `${targetProgress}/${item.episodes} episodes will be set, and this title will move to ${sectionName}.`
+      };
+    }
+
+    function openProgressMoveConfirm(move) {
+      pendingProgressMove = move;
+      const panel = document.getElementById('progressConfirm');
+      document.getElementById('progressConfirmTitle').textContent = move.title;
+      document.getElementById('progressConfirmText').textContent = move.text;
+      panel.classList.add('open');
+      panel.setAttribute('aria-hidden','false');
+      setModalScrollLock(true);
+    }
+
+    function cancelProgressMove() {
+      pendingProgressMove = null;
+      const panel = document.getElementById('progressConfirm');
+      panel.classList.remove('open');
+      panel.setAttribute('aria-hidden','true');
+      if (!document.querySelector('.settings-panel.open') && !document.getElementById('progressConfirm').classList.contains('open')) {
+        setModalScrollLock(false);
+      }
+    }
+
+    function confirmProgressMove() {
+      const move = pendingProgressMove;
+      pendingProgressMove = null;
+      const panel = document.getElementById('progressConfirm');
+      panel.classList.remove('open');
+      panel.setAttribute('aria-hidden','true');
+      if (!document.querySelector('.settings-panel.open')) setModalScrollLock(false);
+
+      if (!move) return;
+      applyProgressChange(move.id, move.delta, true);
+    }
+
+    function progressTap(id, delta, event) {
+      if (suppressNextProgressClick) {
+        suppressNextProgressClick = false;
+        if (event) {
+          event.preventDefault();
+          event.stopPropagation();
+        }
+        return;
+      }
+      applyProgressChange(id, delta, false);
+    }
+
+    function startProgressHold(id, delta, event) {
+      if (event) event.preventDefault();
+
+      stopProgressHold();
+
+      const button = event?.currentTarget || null;
+      progressHoldButton = button;
+      if (button) button.classList.add('holding');
+
+      progressHoldState = { id, delta, fired: false };
+
+      // A normal tap remains one increment. Holding past this delay starts
+      // repeating, which is much faster for long-running anime.
+      progressHoldTimer = setTimeout(() => {
+        if (!progressHoldState) return;
+
+        progressHoldState.fired = true;
+        suppressNextProgressClick = true;
+
+        const step = () => {
+          if (!progressHoldState) return;
+          const didContinue = applyProgressChange(id, delta, false, true);
+          if (!didContinue) {
+            stopProgressHold();
+            return;
+          }
+        };
+
+        step();
+        progressHoldInterval = setInterval(step, 120);
+      }, 420);
+    }
+
+    function stopProgressHold(event) {
+      if (event) event.preventDefault();
+
+      if (progressHoldButton) progressHoldButton.classList.remove('holding');
+
+      if (progressHoldTimer) clearTimeout(progressHoldTimer);
+      if (progressHoldInterval) clearInterval(progressHoldInterval);
+
+      progressHoldTimer = null;
+      progressHoldInterval = null;
+      progressHoldButton = null;
+      progressHoldState = null;
+    }
+
+    function applyProgressChange(id, delta, confirmed = false, fromHold = false) {
+      const item = vault.find(s => s.id === id);
+      if (!item) return false;
+
+      const total = item.episodes === '?' ? null : Number(item.episodes);
+      const nextProgress = Math.max(0, item.progress + delta);
+
+      // The step would trigger an automatic section move. Ask first.
+      if (!confirmed && total !== null) {
+        let targetStatus = null;
+
+        if (nextProgress >= total && item.status !== 'Completed') {
+          targetStatus = 'Completed';
+        } else if (nextProgress < item.progress && item.status === 'Completed') {
+          targetStatus = 'Watching';
+        } else if (nextProgress === 0 && delta < 0 && item.status !== 'Planning') {
+          targetStatus = 'Planning';
+        } else if (nextProgress > 0 && item.status === 'Planning') {
+          targetStatus = 'Watching';
+        }
+
+        if (targetStatus) {
+          const desc = progressMoveDescription(item, targetStatus, Math.min(nextProgress, total));
+          openProgressMoveConfirm({
+            id, delta, title: desc.title, text: desc.text,
+            fromHold: !!fromHold
+          });
+          if (fromHold) stopProgressHold();
+          return false;
+        }
+      }
+
+      item.progress = total === null ? nextProgress : Math.min(nextProgress, total);
+
+      // Category moves happen only after confirmation has been granted.
+      if (total !== null && item.progress >= total) {
+        item.progress = total;
+        item.status = 'Completed';
+      } else if (item.status === 'Completed' && delta < 0) {
+        item.status = 'Watching';
+      } else if (item.progress === 0 && delta < 0) {
+        item.status = 'Planning';
+      } else if (item.status === 'Planning' && delta > 0) {
+        item.status = 'Watching';
+      }
+
+      save();
+      render();
+      titleGroupsReady = false;
+      buildTitleGroups();
+
+      return true;
+    }
+
+    function updateProgress(id, delta) {
+      applyProgressChange(id, delta, false, false);
+    }
+
+    function changeStatus(id, newStatus) {
+      const item = vault.find(s => s.id === id);
+      if (item) {
+        item.status = newStatus;
+        if (newStatus === 'Completed' && item.episodes !== '?') {
+          item.progress = Number(item.episodes);
+        }
+        if (newStatus === 'Planning' && item.progress === 0) {
+          item.progress = 0;
+        }
+        save();
+        render();
+        titleGroupsReady = false;
+        buildTitleGroups();
+      }
+    }
+
+    function removeShow(id) {
+      vault = vault.filter(s => s.id !== id);
+      save();
+      render();
+      titleGroupsReady = false;
+      buildTitleGroups();
+    }
+
+    function setTab(tab) {
+      currentTab = tab;
+
+      if (tab === 'search') {
+        // Discover keeps its own query/results while navigating around MIRU.
+        // The vault search is intentionally cleared when entering Discover.
+        const vaultInput = document.getElementById('vaultSearchInput');
+        if (vaultInput) vaultInput.value = '';
+        vaultSearchResults = [];
+      } else {
+        // Vault sections get their own independent search state. Discover
+        // results remain untouched so returning to Discover restores them.
+        vaultSearchResults = [];
+      }
+
+      updateSearchChrome();
+      render();
+    }
+
+    function render() {
+      const container = document.getElementById('displayArea');
+      const title = document.getElementById('sectionTitle');
+      const count = document.getElementById('sectionCount');
+      container.innerHTML = '';
+
+      const names = {search:'Discover', Watching:'Watching', Planning:'Planning', Completed:'Completed', Dropped:'Dropped'};
+      title.innerText = names[currentTab] || currentTab;
+
+      if (currentTab === 'search') {
+        count.innerText = results.length ? `${results.length} results` : '';
+        if (!results.length) {
+          container.innerHTML = '<div class="empty-state"><div class="empty-icon">✦</div>Start typing to discover anime or donghua.</div>';
+          return;
+        }
+        results.forEach(s => {
+          const inVault = vault.find(v => v.id === s.id);
+          const isDonghua = s.countryOfOrigin === 'CN';
+          const card = document.createElement('div');
+          card.className = 'card';
+          card.innerHTML = `
+            <img src="${s.coverImage.large || s.coverImage.medium}" alt="">
+            <div class="card-content">
+              <div>
+                <div class="card-title">${s.title.english || s.title.romaji}</div>
+                <div class="badges">
+                  <span class="badge">${isDonghua ? 'Donghua' : (s.format || 'Anime')}</span>
+                  <span class="badge score">★ ${s.averageScore ? (s.averageScore/10).toFixed(1) : 'N/A'}</span>
+                </div>
+                <div class="card-meta">${s.episodes || '?'} episodes • ~${s.duration || 24} min</div>
+                <div class="search-result-extra">
+                  <b>Release:</b> ${formatAniDate(s.startDate)}
+                  &nbsp;•&nbsp;
+                  <b>End:</b> ${formatAniDate(s.endDate)}
+                </div>
+                ${s.countryOfOrigin === 'CN' && (s.synonyms || []).length
+                  ? `<div class="search-alts"><b>Also known as:</b> ${escapeHtml((s.synonyms || []).slice(0,4).join(' • '))}</div>`
+                  : ''}
+              </div>
+              <div class="actions">
+                ${inVault ? `
+                  <select onchange="addOrUpdate(${s.id}, this.value)">
+                    <option value="Watching" ${inVault.status === 'Watching' ? 'selected' : ''}>Watching</option>
+                    <option value="Planning" ${inVault.status === 'Planning' ? 'selected' : ''}>Planning</option>
+                    <option value="Completed" ${inVault.status === 'Completed' ? 'selected' : ''}>Completed</option>
+                    <option value="Dropped" ${inVault.status === 'Dropped' ? 'selected' : ''}>Dropped</option>
+                  </select>
+                ` : `<button class="add-btn" onclick="addOrUpdate(${s.id}, 'Planning')">＋ Add to vault</button>`}
+              </div>
+            </div>`;
+          container.appendChild(card);
+        });
+      } else {
+        const query = document.getElementById('vaultSearchInput')?.value.trim().toLowerCase() || '';
+        let filtered = query
+          ? vaultSearchResults.filter(s => s.status === currentTab)
+          : vault.filter(s => s.status === currentTab);
+
+        if (vaultType !== 'all') {
+          filtered = filtered.filter(s => {
+            const format = String(s.format || '').toLowerCase();
+            if (vaultType === 'donghua') return format.includes('donghua');
+            if (vaultType === 'anime') {
+              return !format.includes('movie') && !format.includes('ova') && !format.includes('special');
+            }
+            if (vaultType === 'movie') return format.includes('movie');
+            if (vaultType === 'ova') return format.includes('ova');
+            if (vaultType === 'special') return format.includes('special');
+            return true;
+          });
+        }
+
+        const indexed = filtered.map((item, index) => ({item,index}));
+        indexed.sort((a,b) => {
+          if (vaultSort === 'a-z') return a.item.title.localeCompare(b.item.title);
+          if (vaultSort === 'z-a') return b.item.title.localeCompare(a.item.title);
+          // Existing vault order is the canonical added order. Newer = later.
+          return vaultSort === 'oldest' ? a.index - b.index : b.index - a.index;
+        });
+        filtered = indexed.map(x => x.item);
+
+        count.innerText = filtered.length
+          ? `${filtered.length} title${filtered.length === 1 ? '' : 's'}`
+          : '';
+        if (!filtered.length) {
+          container.innerHTML = query
+            ? `<div class="empty-state"><div class="empty-icon">⌕</div>No ${escapeHtml(currentTab.toLowerCase())} titles match “${escapeHtml(query)}”.</div>`
+            : `<div class="empty-state"><div class="empty-icon">${currentTab === 'Completed' ? '✓' : '✦'}</div>No titles in ${currentTab.toLowerCase()} yet.</div>`;
+          return;
+        }
+        filtered.forEach(s => {
+          const total = s.episodes === '?' ? '?' : Number(s.episodes);
+          const pct = total === '?' ? 0 : Math.min(100, (s.progress / total) * 100);
+          const card = document.createElement('div');
+          card.className = 'card';
+          card.innerHTML = `
+            <img src="${s.image}" alt="">
+            <div class="card-content">
+              <div>
+                <div class="card-title">${s.title}</div>
+                <div class="badges"><span class="badge">${s.format}</span></div>
+                <div class="card-meta">${s.episodes} episodes total</div>
+              </div>
+              <div>
+                <div class="progress-row"><span>Progress</span><b>${s.progress}/${s.episodes}</b></div>
+                <div class="progress"><i style="width:${pct}%"></i></div>
+                <div class="actions" style="margin-top:8px">
+                  <div class="counter">
+                    ${s.status !== 'Planning' ? `<button
+                      onpointerdown="startProgressHold(${s.id}, -1, event)"
+                      onpointerup="stopProgressHold(event)"
+                      onpointercancel="stopProgressHold(event)"
+                      onpointerleave="stopProgressHold(event)"
+                      onclick="progressTap(${s.id}, -1, event)"
+                      aria-label="Decrease episode">−</button>` : ''}
+                    <span>${s.progress}/${s.episodes}</span>
+                    <button
+                      onpointerdown="startProgressHold(${s.id}, 1, event)"
+                      onpointerup="stopProgressHold(event)"
+                      onpointercancel="stopProgressHold(event)"
+                      onpointerleave="stopProgressHold(event)"
+                      onclick="progressTap(${s.id}, 1, event)"
+                      aria-label="Increase episode">+</button>
+                  </div>
+                  <button class="related-btn" onclick="openSeriesOverview(${s.id})" aria-label="Open related releases" title="Related releases">⌘</button>
+                  <select onchange="changeStatus(${s.id}, this.value)">
+                    <option value="Watching" ${s.status === 'Watching' ? 'selected' : ''}>Watching</option>
+                    <option value="Planning" ${s.status === 'Planning' ? 'selected' : ''}>Planning</option>
+                    <option value="Completed" ${s.status === 'Completed' ? 'selected' : ''}>Completed</option>
+                    <option value="Dropped" ${s.status === 'Dropped' ? 'selected' : ''}>Dropped</option>
+                  </select>
+                  <button class="del-btn" onclick="removeShow(${s.id})" aria-label="Remove">×</button>
+                </div>
+              </div>
+            </div>`;
+          container.appendChild(card);
+        });
+      }
+
+      document.querySelectorAll('.nav-btn').forEach(btn => {
+        const label = btn.textContent.trim().toLowerCase();
+        const target = currentTab === 'search' ? 'discover' : currentTab.toLowerCase();
+        btn.classList.toggle('active', label.includes(target));
+      });
+    }
+
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        cancelProgressMove();
+        closeTimeDetails();
+        closeTitleDetails();
+        closeTitleInfo();
+        closeSeriesOverview();
+        toggleSettings(false);
+      }
+    });
+
+    updateStats();
+    updateSearchChrome();
+    render();
+    buildTitleGroups().catch(err => console.warn('Title map build failed:', err));
+  </script>
+</body>
+</html>
