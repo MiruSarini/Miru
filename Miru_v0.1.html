@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MIRU v0.1</title>
+<style>
+:root{--bg:#0b0d12;--panel:#141822;--line:#ffffff14;--text:#f5f6fa;--muted:#9299aa;--accent:#8979ff;--good:#50d29a;--bad:#ff6878}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:15px system-ui,-apple-system,Segoe UI,sans-serif}
+main{max-width:900px;margin:auto;padding:18px 14px 36px}.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
+.brand{display:flex;gap:11px;align-items:center}.logo{width:42px;height:42px;border-radius:13px;background:var(--accent);display:grid;place-items:center;font-weight:900}.ver{color:var(--muted);font-size:12px}
+.pill{border:1px solid var(--line);background:var(--panel);border-radius:999px;padding:8px 11px;color:var(--muted);font-size:12px}.dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#777;margin-right:6px}.good{background:var(--good)}.bad{background:var(--bad)}
+.hero,.card,.result,.empty{background:var(--panel);border:1px solid var(--line);border-radius:18px}.hero{padding:20px}.hero h2{margin:0 0 7px}.muted{color:var(--muted);line-height:1.5;font-size:13px}
+.search{display:flex;gap:8px;margin-top:17px}.search input{flex:1;min-width:0;background:#0d1016;color:var(--text);border:1px solid var(--line);border-radius:13px;padding:12px;outline:0}.search input:focus{border-color:#8979ff99}.btn{border:0;border-radius:13px;padding:0 15px;background:var(--accent);color:white;font-weight:700}.btn:disabled{opacity:.5}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:12px 0}.card{padding:14px}.label{font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}.value{margin-top:6px;font-weight:700;font-size:13px}
+#notice{display:none;margin-top:11px;padding:11px;border-radius:12px;background:#ff68780d;border:1px solid #ff687833;color:#ffd9de;font-size:12px;line-height:1.45}
+#results{display:grid;gap:9px}.result{display:flex;gap:11px;padding:9px}.result img{width:48px;height:67px;object-fit:cover;border-radius:8px;background:#222735}.main{min-width:0;padding-top:3px}.title{font-weight:750;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.meta{color:var(--muted);font-size:11px;margin-top:5px}.empty{text-align:center;color:var(--muted);padding:24px;font-size:13px}
+footer{text-align:center;color:#62697a;font-size:10px;margin-top:16px}@media(max-width:600px){.grid{grid-template-columns:1fr}.search .btn{padding:0 12px}}
+</style></head>
+<body><main>
+<header class="top"><div class="brand"><div class="logo">M</div><div><b>MIRU</b><div class="ver">v0.1 • Foundation</div></div></div><div class="pill"><span id="dot" class="dot"></span><span id="status">Ready</span></div></header>
+<section class="hero"><h2>Foundation test</h2><div class="muted">MIRU v0.1 is intentionally small. First we verify storage and AniList access in the exact browser environment we use for testing.</div>
+<div class="search"><input id="q" placeholder="Search AniList, e.g. Naruto" autocomplete="off"><button id="go" class="btn">Search</button></div><div id="notice"></div></section>
+<section class="grid"><div class="card"><div class="label">Storage</div><div id="storage" class="value">Checking…</div></div><div class="card"><div class="label">Network</div><div id="network" class="value">Not tested</div></div><div class="card"><div class="label">Origin</div><div id="origin" class="value">Checking…</div></div></section>
+<section id="results"><div class="empty">Search for a title to run the first real AniList request.</div></section>
+<footer>Miru_v0.1 • single HTML • no IMDb • no external libraries • fresh storage namespace</footer>
+</main>
+<script>
+'use strict';
+const MIRU=Object.freeze({version:'0.1',storagePrefix:'miru_v0_1_',api:'https://graphql.anilist.co'});
+const $=id=>document.getElementById(id);
+function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));}
+function status(kind,text){$('dot').className='dot '+(kind||'');$('status').textContent=text;}
+function notice(text){$('notice').textContent=text;$('notice').style.display=text?'block':'none';}
+const store={
+ key:n=>MIRU.storagePrefix+n,
+ get(n,f=null){try{let x=localStorage.getItem(this.key(n));return x===null?f:JSON.parse(x)}catch{return f}},
+ set(n,v){localStorage.setItem(this.key(n),JSON.stringify(v))}
+};
+function testStorage(){
+ try{let k=store.key('__test__'),v=Date.now();localStorage.setItem(k,String(v));let ok=localStorage.getItem(k)===String(v);localStorage.removeItem(k);$('storage').textContent=ok?'Ready ✓':'Mismatch';return ok}
+ catch{$('storage').textContent='Blocked';return false}
+}
+async function miruApi(query,variables={}){
+ const r=await fetch(MIRU.api,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({query,variables})});
+ let p;try{p=await r.json()}catch{throw Error('AniList returned non-JSON data (HTTP '+r.status+')')}
+ if(!r.ok)throw Error('AniList HTTP '+r.status+(p?.errors?.length?' • '+p.errors.map(e=>e.message).join('; '):''));
+ if(p?.errors?.length)throw Error(p.errors.map(e=>e.message).join('; '));
+ if(!p?.data)throw Error('AniList returned no data');
+ return p.data;
+}
+const query=`query($search:String){Page(perPage:12){media(search:$search,type:ANIME){id title{romaji english native userPreferred} synonyms coverImage{medium large} episodes duration format countryOfOrigin startDate{year month day} endDate{year month day} status}}}`;
+async function search(){
+ let q=$('q').value.trim();if(!q)return;$('go').disabled=true;$('results').innerHTML='<div class="empty">Searching AniList…</div>';notice('');
+ try{
+  let d=await miruApi(query,{search:q}),m=d?.Page?.media||[];$('network').textContent='AniList reachable ✓';status('good','Online');
+  if(!m.length){$('results').innerHTML='<div class="empty">No results found.</div>';return}
+  $('results').innerHTML=m.map(x=>{let t=x.title?.english||x.title?.romaji||x.title?.native||'Untitled';let a=[x.title?.romaji,x.title?.native].find(v=>v&&v!==t)||'';let k=x.countryOfOrigin==='CN'?'Donghua':(x.format||'Anime');let y=x.startDate?.year||'—';return `<article class="result"><img src="${esc(x.coverImage?.medium||x.coverImage?.large||'')}" alt=""><div class="main"><div class="title">${esc(t)}</div><div class="meta">${esc(k)} • ${esc(y)}${a?' • '+esc(a):''}</div></div></article>`}).join('');
+ }catch(e){$('network').textContent='Request failed';status('bad','Network failed');$('results').innerHTML='<div class="empty">Request failed.</div>';notice('Actual request error: '+e.message)}
+ finally{$('go').disabled=false}
+}
+$('go').onclick=search;$('q').onkeydown=e=>{if(e.key==='Enter')search()};
+$('origin').textContent=location.protocol==='file:'?'Local file (file://)':location.origin;
+testStorage();
+</script></body></html>
